@@ -104,6 +104,8 @@ void SC_Menu::ProjectSave()
 
 void SC_Menu::ProjectLoad()
 {
+	map<GameScene, Layer*> sceneLayer;
+
 	DIR * dir = opendir("Project/");
 	dirent * ent;
 	if (dir != nullptr)
@@ -115,13 +117,15 @@ void SC_Menu::ProjectLoad()
 			if (i > 2)
 			{
 				string fileName = ent->d_name;
-				SceneLoad("Project/" + fileName);
+				SceneLoad("Project/" + fileName, sceneLayer);
 			}
 		}
 	}
+
+	static_cast<SC_Editor*>(SCENE->GetScene("Editor"))->SetSceneLayer(sceneLayer);
 }
 
-void SC_Menu::SceneLoad(string path)
+void SC_Menu::SceneLoad(string path, map<GameScene, Layer*>& sceneLayer)
 {
 	ifstream stream(path);
 	json data;
@@ -138,8 +142,8 @@ void SC_Menu::SceneLoad(string path)
 		if (s == "SELECT") scene = GameScene::SELECT;
 	}
 
-	map<GameScene, Layer*> sceneLayer;
-	sceneLayer[scene] = new Layer();
+	if (!sceneLayer[scene])
+		sceneLayer[scene] = new Layer();
 
 	if (data.find("LAYER") != data.end())
 	{
@@ -239,6 +243,4 @@ void SC_Menu::SceneLoad(string path)
 			}
 		}
 	}
-
-	static_cast<SC_Editor*>(SCENE->GetScene("Editor"))->SetSceneLayer(sceneLayer);
 }

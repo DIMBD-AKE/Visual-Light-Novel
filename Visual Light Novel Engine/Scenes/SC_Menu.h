@@ -1,6 +1,8 @@
 #pragma once
 
 class UI;
+class Layer;
+enum class GameScene;
 
 class SC_Menu : public IScene
 {
@@ -16,7 +18,7 @@ public:
 private:
 	void ProjectSave();
 	void ProjectLoad();
-	void SceneLoad(string path);
+	void SceneLoad(string path, map<GameScene, Layer*>& sceneLayer);
 
 	UI * sideUI;
 };
