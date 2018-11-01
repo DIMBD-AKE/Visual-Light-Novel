@@ -98,7 +98,7 @@ void SC_Menu::ProjectSave()
 
 		CreateDirectory("Project", NULL);
 		ofstream stream("Project/" + sceneName + ".json");
-		stream << setw(4) << data << endl;
+		stream << setw(2) << data << endl;
 	}
 }
 

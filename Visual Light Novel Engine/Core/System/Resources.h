@@ -51,7 +51,7 @@ inline T * Resources::GetResource(string filePath, string window)
 	if (resources[type].find(filePath + window) == resources[type].end())
 		AddResource<T>(filePath, window);
 
-	return dynamic_cast<T*>(resources[type][filePath + window]);
+	return static_cast<T*>(resources[type][filePath + window]->GetResource());
 }
 
 template<typename T>

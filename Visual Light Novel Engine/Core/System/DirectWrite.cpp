@@ -5,6 +5,7 @@
 DirectWrite::DirectWrite()
 	: align(WriteAlign::LEFT)
 {
+	ZeroMemory(&cache, sizeof(WriteCache));
 }
 
 
@@ -113,7 +114,17 @@ void DirectWrite::Text(wstring text, D3DXVECTOR2 position, string window, float 
 		range.right = position.x + length / 2;
 	}
 
-	writes[window].WriteDeviceContext->DrawText
+	ID2D1DeviceContext * context = nullptr;
+
+	if (cache.Window.compare(window) || !cache.WriteDeviceContext)
+	{
+		cache.WriteDeviceContext = writes[window].WriteDeviceContext;
+		cache.Window = window;
+	}
+
+	context = cache.WriteDeviceContext;
+
+	cache.WriteDeviceContext->DrawText
 	(
 		text.c_str(),
 		text.size(),
@@ -149,6 +160,9 @@ IDWriteTextFormat * DirectWrite::RegistFont(wstring fontName, float fontSize, DW
 	font.Style = fontStyle;
 	font.Stretch = fontStretch;
 
+	if (cache.Font.first == font && cache.Font.second && cache.Window.compare(window) == 0)
+		return cache.Font.second;
+
 	IDWriteTextFormat * format = FindFormat(font, window);
 
 	if (!format)
@@ -169,11 +183,17 @@ IDWriteTextFormat * DirectWrite::RegistFont(wstring fontName, float fontSize, DW
 		writes[window].Fonts.push_back(make_pair(font, format));
 	}
 
+	cache.Font.first = font;
+	cache.Font.second = format;
+
 	return format;
 }
 
 ID2D1SolidColorBrush * DirectWrite::RegistBrush(D3DXCOLOR color, string window)
 {
+	if (cache.Brush.first == color && cache.Brush.second && cache.Window.compare(window) == 0)
+		return cache.Brush.second;
+
 	ID2D1SolidColorBrush * brush = FindBrush(color, window);
 
 	if (!brush)
@@ -184,6 +204,9 @@ ID2D1SolidColorBrush * DirectWrite::RegistBrush(D3DXCOLOR color, string window)
 
 		writes[window].Brushes.push_back(make_pair(color, brush));
 	}
+
+	cache.Brush.first = color;
+	cache.Brush.second = brush;
 
 	return brush;
 }

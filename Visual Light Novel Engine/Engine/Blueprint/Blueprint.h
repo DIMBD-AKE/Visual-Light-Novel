@@ -134,7 +134,6 @@ private:
 	void MouseDrag();
 	BlueprintNode * FindNode(UINT id);
 
-	D3DXMATRIX wvpMatrix;
 	VertexBuffer * vertexBuffer;
 	Shader * shader;
 

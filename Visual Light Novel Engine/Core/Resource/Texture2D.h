@@ -8,6 +8,7 @@ public:
 	virtual ~Texture2D();
 
 	virtual void CreateResourceFromFile(string filePath, string window) override;
+	virtual void * GetResource() override;
 
 	void CreateTextureFromFile(string filePath, string window);
 

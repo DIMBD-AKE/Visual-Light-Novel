@@ -30,6 +30,14 @@ struct Write
 	vector<pair<D3DXCOLOR, ID2D1SolidColorBrush*>> Brushes;
 };
 
+struct WriteCache
+{
+	ID2D1DeviceContext * WriteDeviceContext;
+	pair<Font, IDWriteTextFormat*> Font;
+	pair<D3DXCOLOR, ID2D1SolidColorBrush*> Brush;
+	string Window;
+};
+
 enum class WriteAlign
 {
 	LEFT,
@@ -78,6 +86,7 @@ private:
 	ID2D1SolidColorBrush * FindBrush(D3DXCOLOR color, string window);
 
 	WriteAlign align;
+	WriteCache cache;
 
 private:
 	

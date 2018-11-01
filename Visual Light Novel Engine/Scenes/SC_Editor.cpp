@@ -383,5 +383,10 @@ void SC_Editor::ChangeScene(GameScene scene)
 		sceneLayer[scene] = new Layer();
 
 	objectLayer = sceneLayer[scene];
+	if (selectObject.object)
+	{
+		selectObject.object->ChangeShader("Shaders/Texture2D.hlsl");
+		selectObject.object->SetColor(D3DXVECTOR4(1, 1, 1, 1));
+	}
 	selectObject.object = nullptr;
 }

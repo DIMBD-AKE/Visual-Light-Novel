@@ -25,9 +25,15 @@ Shader::~Shader()
 
 void Shader::CreateResourceFromFile(string filePath, string window)
 {
-	CreateShaderFromFile(filePath, window);
 	this->filePath = filePath;
 	this->window = window;
+}
+
+void * Shader::GetResource()
+{
+	Shader * res = new Shader();
+	res->CreateShaderFromFile(filePath, window);
+	return res;
 }
 
 void Shader::CreateShaderFromFile(string filePath, string window)
@@ -158,31 +164,48 @@ void Shader::CreateShaderFromFile(string filePath, string window)
 
 	hr = GRAPHICS->GetDevice(window)->CreateSamplerState(&samplerDesc, &sampleState);
 	assert(SUCCEEDED(hr));
+
+	cache.context = GRAPHICS->GetDeviceContext(window);
 }
 
-void Shader::SetShaderParameters(D3DXMATRIX wvp, D3DXVECTOR4 color, D3DXVECTOR4 sizeScale, ID3D11ShaderResourceView * texture, string window)
+void Shader::SetShaderParameters(Transform * tf, D3DXVECTOR4 color, D3DXVECTOR4 sizeScale, ID3D11ShaderResourceView * texture, string window)
 {
-	D3DXMatrixTranspose(&wvp, &wvp);
+	bool isNull = !tf;
+	if (!tf)
+		tf = &Transform();
+	if (cache.tf != *tf || D3DXVec4LengthSq(&(cache.color - color)) > 0.01f)
+	{
+		D3DXMATRIX wvp = tf->GetWorldMatrix(window);
+		if (isNull)
+			D3DXMatrixIdentity(&wvp);
+		wvp *= CAMERA->GetViewMatrix();
+		wvp *= GRAPHICS->GetProjectionMatrix(window);
 
-	ShaderBuffer data;
-	data.worldViewMatrix = wvp;
-	data.color = color;
-	data.sizeScale = sizeScale;
+		D3DXMatrixTranspose(&wvp, &wvp);
 
-	shaderBuffer->Mapped<ShaderBuffer>(data);
+		ShaderBuffer data;
+		data.worldViewMatrix = wvp;
+		data.color = color;
+		data.sizeScale = sizeScale;
 
+		shaderBuffer->Mapped<ShaderBuffer>(data);
+
+		cache.tf = *tf;
+		cache.color = color;
+	}
 	shaderBuffer->SetVS(0, 1);
 	shaderBuffer->SetPS(0, 1);
-	GRAPHICS->GetDeviceContext(window)->PSSetShaderResources(0, 1, &texture);
+
+	cache.context->PSSetShaderResources(0, 1, &texture);
 }
 
-void Shader::RenderShader(int indexCount, D3DXMATRIX wvp, D3DXVECTOR4 color, D3DXVECTOR4 sizeScale, ID3D11ShaderResourceView * texture, string window)
+void Shader::RenderShader(int indexCount, Transform * tf, D3DXVECTOR4 color, D3DXVECTOR4 sizeScale, ID3D11ShaderResourceView * texture, string window)
 {
-	SetShaderParameters(wvp, color, sizeScale, texture, window);
+	SetShaderParameters(tf, color, sizeScale, texture, window);
 
-	GRAPHICS->GetDeviceContext(window)->IASetInputLayout(layout);
-	GRAPHICS->GetDeviceContext(window)->VSSetShader(vertexShader, NULL, 0);
-	GRAPHICS->GetDeviceContext(window)->PSSetShader(pixelShader, NULL, 0);
+	cache.context->IASetInputLayout(layout);
+	cache.context->VSSetShader(vertexShader, NULL, 0);
+	cache.context->PSSetShader(pixelShader, NULL, 0);
 
-	GRAPHICS->GetDeviceContext(window)->DrawIndexed(indexCount, 0, 0);
+	cache.context->DrawIndexed(indexCount, 0, 0);
 }

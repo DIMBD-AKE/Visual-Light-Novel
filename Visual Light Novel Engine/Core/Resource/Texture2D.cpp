@@ -20,6 +20,11 @@ void Texture2D::CreateResourceFromFile(string filePath, string window)
 	this->window = window;
 }
 
+void * Texture2D::GetResource()
+{
+	return this;
+}
+
 void Texture2D::CreateTextureFromFile(string filePath, string window)
 {
 	HRESULT hr = D3DX11CreateShaderResourceViewFromFileA

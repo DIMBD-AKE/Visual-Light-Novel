@@ -32,6 +32,7 @@ BlueprintList::~BlueprintList()
 	}
 	SAFE_DELETE(vertexBuffer);
 	SAFE_DELETE(seq);
+	SAFE_DELETE(shader);
 }
 
 Blueprint * BlueprintList::Add(BlueprintType type)
@@ -268,12 +269,6 @@ void BlueprintList::CreateBuffer()
 	vector<VertexColor> vertices(2);
 
 	vertexBuffer->Create(vertices, "Blueprint");
-
-	D3DXMATRIX world;
-	D3DXMatrixIdentity(&world);
-	wvpMatrix = world;
-	wvpMatrix *= GRAPHICS->GetProjectionMatrix("Blueprint");
-	wvpMatrix *= CAMERA->GetViewMatrix();
 }
 
 void BlueprintList::Link()
@@ -389,7 +384,7 @@ void BlueprintList::LineRender(Blueprint * from, Blueprint * to, wstring comment
 	vertexBuffer->Mapped(vertices);
 	vertexBuffer->IASet();
 
-	shader->RenderShader(vertices.size(), wvpMatrix, D3DXVECTOR4(1, 1, 1, 1), D3DXVECTOR4(1, 1, 1, 1), nullptr, "Blueprint");
+	shader->RenderShader(vertices.size(), nullptr, D3DXVECTOR4(1, 1, 1, 1), D3DXVECTOR4(1, 1, 1, 1), nullptr, "Blueprint");
 
 	GRAPHICS->GetDeviceContext("Blueprint")->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 	GRAPHICS->GetDeviceContext("Blueprint")->Draw(vertices.size(), 0);

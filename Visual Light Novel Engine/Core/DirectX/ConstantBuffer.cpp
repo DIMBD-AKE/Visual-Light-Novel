@@ -10,10 +10,10 @@ ConstantBuffer::~ConstantBuffer()
 
 void ConstantBuffer::SetVS(UINT startSlot, UINT numBuffers)
 {
-	GRAPHICS->GetDeviceContext(window)->VSSetConstantBuffers(startSlot, numBuffers, &buffer);
+	context->VSSetConstantBuffers(startSlot, numBuffers, &buffer);
 }
 
 void ConstantBuffer::SetPS(UINT startSlot, UINT numBuffers)
 {
-	GRAPHICS->GetDeviceContext(window)->PSSetConstantBuffers(startSlot, numBuffers, &buffer);
+	context->PSSetConstantBuffers(startSlot, numBuffers, &buffer);
 }

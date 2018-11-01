@@ -1,18 +1,19 @@
 #pragma once
 #include "../stdafx.h"
 
-struct BirthDay
+struct Background
 {
-	int Year, Month, Day;
+	map<string, string> ImagePath;
 };
 
 struct Character
 {
 	string Name;
 	string Description;
-	string BloodType;
 	map<string, string> StateImage;
-	BirthDay BirthDay;
+
+	Character(string name, string desc)
+		: Name(name), Description(desc) {}
 };
 
 struct Stuff
@@ -20,9 +21,7 @@ struct Stuff
 	string Name;
 	string Description;
 	map<string, string> StateImage;
-};
 
-struct Background
-{
-	map<string, string> ImagePath;
+	Stuff(string name, string desc)
+		: Name(name), Description(desc) {}
 };

@@ -16,6 +16,7 @@ public:
 	void SetPS(UINT startSlot, UINT numBuffers);
 
 private:
+	ID3D11DeviceContext * context;
 	ID3D11Buffer * buffer;
 	string window;
 };
@@ -33,6 +34,7 @@ inline void ConstantBuffer::Create(string window)
 	bufferDesc.MiscFlags = 0;
 	bufferDesc.StructureByteStride = 0;
 
+	context = GRAPHICS->GetDeviceContext(window);
 	this->window = window;
 
 	HRESULT hr = GRAPHICS->GetDevice(window)->CreateBuffer(&bufferDesc, NULL, &buffer);

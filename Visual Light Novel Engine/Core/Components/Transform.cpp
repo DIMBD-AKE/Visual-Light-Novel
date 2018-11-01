@@ -1,6 +1,19 @@
 #include "../../stdafx.h"
 #include "Transform.h"
 
+bool Transform::operator==(Transform & tf)
+{
+	if (D3DXVec3LengthSq(&(GetPosition() - tf.GetPosition())) > 0.01f) return false;
+	if (D3DXVec3LengthSq(&(GetRotation() - tf.GetRotation())) > 0.01f) return false;
+	if (D3DXVec3LengthSq(&(GetScale() - tf.GetScale())) > 0.01f) return false;
+	return true;
+}
+
+bool Transform::operator!=(Transform & tf)
+{
+	return !(*this == tf);
+}
+
 D3DXVECTOR3 Transform::GetPosition(string window)
 {
 	D3DXVECTOR3 pos = position + offset;

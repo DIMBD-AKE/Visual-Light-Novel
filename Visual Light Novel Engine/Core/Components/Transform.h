@@ -6,6 +6,9 @@ public:
 	Transform() : position(0, 0, 0), rotation(0, 0, 0), scale(1, 1, 1), offset(0, 0, 0) {}
 	virtual ~Transform() {}
 
+	bool operator==(Transform& tf);
+	bool operator!=(Transform& tf);
+
 protected:
 	D3DXVECTOR3 position;
 	D3DXVECTOR3 rotation;

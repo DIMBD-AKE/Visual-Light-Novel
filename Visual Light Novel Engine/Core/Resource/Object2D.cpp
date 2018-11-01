@@ -24,6 +24,7 @@ Object2D::~Object2D()
 {
 	SAFE_DELETE(indexBuffer);
 	SAFE_DELETE(vertexBuffer);
+	SAFE_DELETE(shader);
 }
 
 void Object2D::Load(json & data)
@@ -58,14 +59,10 @@ void Object2D::Render()
 	CAMERA->Render();
 	RenderBuffers();
 
-	D3DXMATRIX wvp = GetWorldMatrix(window);
-	wvp *= CAMERA->GetViewMatrix();
-	wvp *= GRAPHICS->GetProjectionMatrix(window);
-
 	shader->RenderShader
 	(
 		6,
-		wvp,
+		this,
 		color,
 		D3DXVECTOR4(texture2D->GetDesc().Width, texture2D->GetDesc().Height, scale.x, scale.y),
 		texture2D->GetSRV(),
@@ -81,6 +78,7 @@ void Object2D::ChangeTexture(string texturePath)
 
 void Object2D::ChangeShader(string shaderPath)
 {
+	SAFE_DELETE(shader);
 	shader = RESOURCES->GetResource<Shader>(shaderPath, window);
 	this->shaderPath = shaderPath;
 }
