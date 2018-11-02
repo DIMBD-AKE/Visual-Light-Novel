@@ -9,6 +9,7 @@ public:
 	virtual ~BP_Object();
 
 	virtual void Load(json& data);
+	virtual void Save(json &data, int layer, int objIndex, int bpIndex) override;
 	virtual void SubUpdate() override;
 
 	BlueprintObject GetObjectData() { return objectData; }

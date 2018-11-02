@@ -8,6 +8,7 @@
 #include "../Engine/Blueprint/Blueprint.h"
 #include "../Engine/Blueprint/BP_Object.h"
 #include "../Engine/Blueprint/BP_Float.h"
+#include "../Engine/Blueprint/BP_Function.h"
 #include <fstream>
 #include <iomanip>
 
@@ -16,6 +17,7 @@ using namespace nlohmann;
 SC_Menu::SC_Menu()
 	: sideUI(nullptr)
 {
+	
 }
 
 
@@ -76,6 +78,9 @@ bool SC_Menu::Release()
 void SC_Menu::ProjectSave()
 {
 	auto sceneLayer = static_cast<SC_Editor*>(SCENE->GetScene("Editor"))->GetSceneLayer();
+	CreateDirectory("Project", NULL);
+	CreateDirectory("Project/Scenes", NULL);
+	CreateDirectory("Project/Elements", NULL);
 	for (auto scene : sceneLayer)
 	{
 		string sceneName;
@@ -96,8 +101,7 @@ void SC_Menu::ProjectSave()
 			}
 		}
 
-		CreateDirectory("Project", NULL);
-		ofstream stream("Project/" + sceneName + ".json");
+		ofstream stream("Project/Scenes/" + sceneName + ".json");
 		stream << setw(2) << data << endl;
 	}
 }
@@ -106,7 +110,7 @@ void SC_Menu::ProjectLoad()
 {
 	map<GameScene, Layer*> sceneLayer;
 
-	DIR * dir = opendir("Project/");
+	DIR * dir = opendir("Project/Scenes/");
 	dirent * ent;
 	if (dir != nullptr)
 	{
@@ -117,12 +121,28 @@ void SC_Menu::ProjectLoad()
 			if (i > 2)
 			{
 				string fileName = ent->d_name;
-				SceneLoad("Project/" + fileName, sceneLayer);
+				SceneLoad("Project/Scenes/" + fileName, sceneLayer);
 			}
 		}
 	}
 
 	static_cast<SC_Editor*>(SCENE->GetScene("Editor"))->SetSceneLayer(sceneLayer);
+
+	dir = opendir("Project/Elements/");
+	ent;
+	if (dir != nullptr)
+	{
+		int i = 0;
+		while ((ent = readdir(dir)) != nullptr)
+		{
+			i++;
+			if (i > 2)
+			{
+				string fileName = ent->d_name;
+				
+			}
+		}
+	}
 }
 
 void SC_Menu::SceneLoad(string path, map<GameScene, Layer*>& sceneLayer)
@@ -174,32 +194,9 @@ void SC_Menu::SceneLoad(string path, map<GameScene, Layer*>& sceneLayer)
 							for (auto node : object["BLUEPRINT"]["LIST"])
 							{
 								string _bpPos = node["DATA"].value("POSITION", "");
-								string _bpType = node["DATA"].value("TYPE", "");
-								string _bpSubType = node["DATA"].value("SUBTYPE", "");
 
-								BlueprintType bpType = BlueprintType::BEGIN;
-								{
-									if (_bpType == "BEGIN") bpType = BlueprintType::BEGIN;
-									if (_bpType == "FLOAT") bpType = BlueprintType::FLOAT;
-									if (_bpType == "OBJECT") bpType = BlueprintType::OBJECT;
-									if (_bpType == "SEQUENCE") bpType = BlueprintType::SEQUENCE;
-								}
-
-								BlueprintSubType bpSubType = BlueprintSubType::NONE;
-								{
-									if (_bpSubType == "SEQUENCE_QUEUE_EASEIN") 
-										bpSubType = BlueprintSubType::SEQUENCE_QUEUE_EASEIN;
-									if (_bpSubType == "SEQUENCE_QUEUE_EASEOUT") 
-										bpSubType = BlueprintSubType::SEQUENCE_QUEUE_EASEOUT;
-									if (_bpSubType == "SEQUENCE_QUEUE_EASEINOUT")
-										bpSubType = BlueprintSubType::SEQUENCE_QUEUE_EASEINOUT;
-									if (_bpSubType == "SEQUENCE_QUEUE_LINEAR")
-										bpSubType = BlueprintSubType::SEQUENCE_QUEUE_LINEAR;
-									if (_bpSubType == "SEQUENCE_QUEUE_BEZIER2")
-										bpSubType = BlueprintSubType::SEQUENCE_QUEUE_BEZIER2;
-									if (_bpSubType == "SEQUENCE_QUEUE_BEZIER3")
-										bpSubType = BlueprintSubType::SEQUENCE_QUEUE_BEZIER3;
-								}
+								BlueprintType bpType = BPFunction::StringToType(node["DATA"].value("TYPE", ""));
+								BlueprintSubType bpSubType = BPFunction::StringToSubType(node["DATA"].value("SUBTYPE", ""));
 
 								BlueprintLinkData data;
 								{
@@ -225,6 +222,12 @@ void SC_Menu::SceneLoad(string path, map<GameScene, Layer*>& sceneLayer)
 									bpCreate->Load(node);
 									bpList->Add(bpCreate);
 								}
+								else if (bpType == BlueprintType::FUNCTION)
+								{
+									bpCreate = new BP_Function();
+									bpCreate->Load(node);
+									bpList->Add(bpCreate);
+								}
 								else
 									bpCreate = bpList->Add(bpType);
 
@@ -243,4 +246,6 @@ void SC_Menu::SceneLoad(string path, map<GameScene, Layer*>& sceneLayer)
 			}
 		}
 	}
+
+	
 }

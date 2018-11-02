@@ -173,7 +173,7 @@ void Shader::SetShaderParameters(Transform * tf, D3DXVECTOR4 color, D3DXVECTOR4 
 	bool isNull = !tf;
 	if (!tf)
 		tf = &Transform();
-	if (cache.tf != *tf || D3DXVec4LengthSq(&(cache.color - color)) > 0.01f)
+	if (cache.tf != *tf || D3DXVec4LengthSq(&(cache.color - color)) > FLT_EPSILON)
 	{
 		D3DXMATRIX wvp = tf->GetWorldMatrix(window);
 		if (isNull)

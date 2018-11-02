@@ -1,0 +1,33 @@
+﻿<Page x:Class="Visual_Light_Novel_Element.Stuff"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Visual_Light_Novel_Element"
+      mc:Ignorable="d" 
+      d:DesignHeight="521" d:DesignWidth="694"
+      Title="Stuff">
+
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="이름"/>
+        <TextBox x:Name="Name" HorizontalAlignment="Left" Height="23" Margin="54,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="139"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="설명"/>
+        <RichTextBox x:Name="Explain" HorizontalAlignment="Left" Height="142" Margin="54,46,0,0" VerticalAlignment="Top" Width="173">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </RichTextBox.Resources>
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text=""/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <ListBox x:Name="StateList" HorizontalAlignment="Left" Height="263" Margin="10,217,0,0" VerticalAlignment="Top" Width="217" SelectionChanged="StateList_SelectionChanged"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="상태 이미지"/>
+        <Button Content="추가" HorizontalAlignment="Left" Margin="72,491,0,0" VerticalAlignment="Top" Width="75" Background="White" BorderBrush="#FFABADB3" Click="Add_Click"/>
+        <Button Content="삭제" HorizontalAlignment="Left" Margin="152,491,0,0" VerticalAlignment="Top" Width="75" Background="White" BorderBrush="#FFABADB3" Click="Delete_Click"/>
+        <Image x:Name="Preview" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="501" Margin="244,10,0,0" VerticalAlignment="Top" Width="440"/>
+    </Grid>
+</Page>

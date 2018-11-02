@@ -11,8 +11,7 @@
 BP_Sequence::BP_Sequence()
 {
 	type = BlueprintType::SEQUENCE;
-	color = D3DXVECTOR4(224 / 255.0f, 237 / 255.0f, 1, 1);
-	object2D->SetColor(color);
+	object2D->SetColor(D3DXVECTOR4(224 / 255.0f, 237 / 255.0f, 1, 1));
 }
 
 BP_Sequence::~BP_Sequence()

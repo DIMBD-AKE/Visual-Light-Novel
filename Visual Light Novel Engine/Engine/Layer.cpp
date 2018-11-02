@@ -91,11 +91,11 @@ void Layer::Render()
 
 void Layer::Excute()
 {
-	for (auto layer : layers)
+	/*for (auto layer : layers)
 	{
 		for (auto object : layer.second)
 		{
 			object->GetBlueprint()->Excute();
 		}
-	}
+	}*/
 }

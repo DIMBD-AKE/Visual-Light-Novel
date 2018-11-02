@@ -6,6 +6,7 @@
 #include "BP_Sequence.h"
 #include "BP_Object.h"
 #include "BP_Float.h"
+#include "BP_Function.h"
 
 
 BlueprintList::BlueprintList(BlueprintObjectType type)
@@ -15,7 +16,6 @@ BlueprintList::BlueprintList(BlueprintObjectType type)
 	, type(type)
 	, offset(0, 0, 0)
 {
-	Add(BlueprintType::BEGIN);
 	shader = RESOURCES->GetResource<Shader>("Shaders/Line.hlsl", "Blueprint");
 	vertexBuffer = new VertexBuffer();
 	seq = new Sequence();
@@ -41,7 +41,7 @@ Blueprint * BlueprintList::Add(BlueprintType type)
 	if (type == BlueprintType::SEQUENCE) data = new BP_Sequence();
 	if (type == BlueprintType::OBJECT) data = new BP_Object(static_cast<SC_Editor*>(SCENE->GetScene("Editor"))->GetSelectObject());
 	if (type == BlueprintType::FLOAT) data = new BP_Float();
-	if (type == BlueprintType::BEGIN) data = new Blueprint();
+	if (type == BlueprintType::FUNCTION) data = new BP_Function();
 	data->GetObject2D()->SetPosition(640, 360, 0);
 	data->SetID(time(NULL) + timeGetTime());
 	BlueprintNode * node = new BlueprintNode();
@@ -49,6 +49,7 @@ Blueprint * BlueprintList::Add(BlueprintType type)
 	node->prev = nullptr;
 	node->next = nullptr;
 	nodeList.push_back(node);
+	cout << "[Blueprint] Create '" + BPFunction::TypeToString(type) + "'" << endl;
 	return data;
 }
 
@@ -59,6 +60,7 @@ Blueprint * BlueprintList::Add(Blueprint * bp)
 	node->prev = nullptr;
 	node->next = nullptr;
 	nodeList.push_back(node);
+	cout << "[Blueprint] Create '" + BPFunction::TypeToString(bp->GetType()) + "'" << endl;
 	return bp;
 }
 
@@ -66,7 +68,7 @@ void BlueprintList::Delete(BlueprintNode * node)
 {
 	for (int i = 0; i < nodeList.size(); i++)
 	{
-		if (nodeList[i]->data->GetID() == node->data->GetID() && nodeList[i]->data->GetType() != BlueprintType::BEGIN)
+		if (nodeList[i]->data->GetID() == node->data->GetID())
 		{
 			if (nodeList[i]->next)
 				nodeList[i]->next->prev = nullptr;
@@ -94,8 +96,8 @@ void BlueprintList::Update()
 		D3DXCOLOR color = bp->data->GetColorAvg() > 0.5 ? D3DXCOLOR(0, 0, 0, 1) : D3DXCOLOR(1, 1, 1, 1);
 
 		WRITE->SetAlign(WriteAlign::CENTER);
-		if (bp->data->GetType() == BlueprintType::BEGIN)
-			WRITE->Text(L"Begin", pos, "Blueprint", 20, L"³ª´®½ºÄù¾î", color);
+		if (bp->data->GetType() == BlueprintType::FUNCTION)
+			WRITE->Text(L"Function", pos, "Blueprint", 20, L"³ª´®½ºÄù¾î", color);
 		if (bp->data->GetType() == BlueprintType::SEQUENCE)
 			WRITE->Text(L"Sequence", pos, "Blueprint", 20, L"³ª´®½ºÄù¾î", color);
 		if (bp->data->GetType() == BlueprintType::OBJECT)
@@ -155,56 +157,23 @@ void BlueprintList::Render()
 		bp->data->Render();
 }
 
-void BlueprintList::Save(json &data, int layer, int index)
+void BlueprintList::Save(json &data, int layer, int objIndex)
 {
-#define THISPATH data["LAYER"][to_string(layer)]["OBJECT"][index]["BLUEPRINT"]["LIST"][i]
-
-	data["LAYER"][to_string(layer)]["OBJECT"][index]["BLUEPRINT"]["OFFSET"] = Util::VectorToString(offset);
+	data["LAYER"][to_string(layer)]["OBJECT"][objIndex]["BLUEPRINT"]["OFFSET"] = Util::VectorToString(offset);
 	for (int i = 0; i < nodeList.size(); i++)
 	{
 		auto node = nodeList[i];
-		string typeString;
-		if (node->data->GetType() == BlueprintType::BEGIN) typeString = "BEGIN";
-		if (node->data->GetType() == BlueprintType::FLOAT) typeString = "FLOAT";
-		if (node->data->GetType() == BlueprintType::OBJECT) typeString = "OBJECT";
-		if (node->data->GetType() == BlueprintType::SEQUENCE) typeString = "SEQUENCE";
-		string subtypeString;
-		if (node->data->GetSubType() == BlueprintSubType::NONE) subtypeString = "NONE";
-		if (node->data->GetSubType() == BlueprintSubType::SEQUENCE_QUEUE_BEZIER2) subtypeString = "SEQUENCE_QUEUE_BEZIER2";
-		if (node->data->GetSubType() == BlueprintSubType::SEQUENCE_QUEUE_BEZIER3) subtypeString = "SEQUENCE_QUEUE_BEZIER3";
-		if (node->data->GetSubType() == BlueprintSubType::SEQUENCE_QUEUE_EASEIN) subtypeString = "SEQUENCE_QUEUE_EASEIN";
-		if (node->data->GetSubType() == BlueprintSubType::SEQUENCE_QUEUE_EASEINOUT) subtypeString = "SEQUENCE_QUEUE_EASEINOUT";
-		if (node->data->GetSubType() == BlueprintSubType::SEQUENCE_QUEUE_EASEOUT) subtypeString = "SEQUENCE_QUEUE_EASEOUT";
-		if (node->data->GetSubType() == BlueprintSubType::SEQUENCE_QUEUE_LINEAR) subtypeString = "SEQUENCE_QUEUE_LINEAR";
-
-		THISPATH["PREV"] = node->prev ? node->prev->data->GetID() : 0;
-		THISPATH["NEXT"] = node->next ? node->next->data->GetID() : 0;
-
-		THISPATH["DATA"]["ID"] = node->data->GetID();
-		THISPATH["DATA"]["TYPE"] = typeString;
-		THISPATH["DATA"]["SUBTYPE"] = subtypeString;
-		THISPATH["DATA"]["POSITION"] = Util::VectorToString(node->data->GetObject2D()->GetPosition() - node->data->GetObject2D()->GetOffset());
-
-		if (node->data->GetType() == BlueprintType::OBJECT)
-		{
-			auto bp = static_cast<BP_Object*>(node->data);
-			THISPATH["DATA"]["VALUE"]["POSITION"] = Util::VectorToString(bp->GetObjectData().Position);
-			THISPATH["DATA"]["VALUE"]["ROTATION"] = Util::VectorToString(bp->GetObjectData().Rotation);
-			THISPATH["DATA"]["VALUE"]["SCALE"] = Util::VectorToString(bp->GetObjectData().Scale);
-			THISPATH["DATA"]["VALUE"]["COLOR"] = Util::VectorToString(bp->GetObjectData().Color);
-		}
-
-		if (node->data->GetType() == BlueprintType::FLOAT)
-		{
-			auto bp = static_cast<BP_Float*>(node->data);
-			THISPATH["DATA"]["VALUE"]["FLOAT"] = to_string(bp->GetValue());
-		}
+		
+		THISPATH(layer, objIndex, i)["PREV"] = node->prev ? node->prev->data->GetID() : 0;
+		THISPATH(layer, objIndex, i)["NEXT"] = node->next ? node->next->data->GetID() : 0;
 
 		for (int j = 0; j < node->data->GetSubData().size(); j++)
 		{
 			auto bp = static_cast<Blueprint*>(node->data->GetSubData()[j].Data);
-			THISPATH["DATA"]["SUBDATA"][j] = bp ? bp->GetID() : 0;
+			THISPATH(layer, objIndex, i)["DATA"]["SUBDATA"][j] = bp ? bp->GetID() : 0;
 		}
+
+		node->data->Save(data, layer, objIndex, i);
 	}
 }
 
@@ -227,12 +196,14 @@ BlueprintNode * BlueprintList::GetClickNode()
 	return nullptr;
 }
 
-void BlueprintList::Excute()
+void BlueprintList::Excute(string funcName)
 {
 	BlueprintNode * head = nullptr;
+
 	for (auto node : nodeList)
-		if (node->data->GetType() == BlueprintType::BEGIN)
-			head = node;
+		if (node->data->GetType() == BlueprintType::FUNCTION &&
+			static_cast<BP_Function*>(node->data)->GetName().compare(funcName) == 0)
+				head = node;
 
 	seq->Clear();
 
@@ -311,12 +282,14 @@ void BlueprintList::Link()
 				if (selectNode->next)
 					selectNode->next->prev = nullptr;
 				selectNode->next = bp;
+				cout << "[Blueprint] Link " + to_string(selectNode->data->GetID()) + " to " + to_string(bp->data->GetID()) << endl;
 				return;
 			}
 		}
 		if (selectNode->next)
 			selectNode->next->prev = nullptr;
 		selectNode->next = nullptr;
+		cout << "[Blueprint] Unlink " + to_string(selectNode->data->GetID()) << endl;
 	}
 }
 
@@ -351,6 +324,7 @@ void BlueprintList::SetData()
 				if (type == BlueprintType::OBJECT) data = static_cast<BP_Object*>(node->data);
 				if (type == BlueprintType::FLOAT) data = static_cast<BP_Float*>(node->data);
 				selectNode->data->GetSubData()[*dataIndex].Data = data;
+				cout << "[Blueprint] Set " + BPFunction::TypeToString(type) + " is " + to_string(node->data->GetID()) << endl;
 			}
 			else
 				selectNode->data->GetSubData()[*dataIndex].Data = nullptr;
@@ -392,7 +366,8 @@ void BlueprintList::LineRender(Blueprint * from, Blueprint * to, wstring comment
 
 void BlueprintList::MouseDrag()
 {
-	D3DXVECTOR3 pos = D3DXVECTOR3(INPUT->GetMousePos("Blueprint").x, INPUT->GetMousePos("Blueprint").y, 0);
+	D3DXVECTOR3 pos = D3DXVECTOR3(INPUT->GetMousePos("Blueprint").x, 
+		INPUT->GetMousePos("Blueprint").y, 0);
 	if (INPUT->GetKeyDown(VK_MBUTTON))
 	{
 		startMousePos = pos;
@@ -417,8 +392,6 @@ BlueprintNode * BlueprintList::FindNode(UINT id)
 Blueprint::Blueprint()
 {
 	object2D = new Object2D("Blueprint", "Images/UI/Blueprint.png");
-	color = D3DXVECTOR4(1, 1, 1, 1);
-	type = BlueprintType::BEGIN;
 	subType = BlueprintSubType::NONE;
 }
 
@@ -444,6 +417,21 @@ void Blueprint::Render()
 {
 	SubRender();
 	object2D->Render();
+}
+
+void Blueprint::Save(json & data, int layer, int objIndex, int bpIndex)
+{
+	THISPATH(layer, objIndex, bpIndex)["DATA"]["ID"] = id;
+	THISPATH(layer, objIndex, bpIndex)["DATA"]["TYPE"] = BPFunction::TypeToString(type);
+	THISPATH(layer, objIndex, bpIndex)["DATA"]["SUBTYPE"] = BPFunction::SubTypeToString(subType);
+	THISPATH(layer, objIndex, bpIndex)["DATA"]["POSITION"] = Util::VectorToString(object2D->GetPosition() - object2D->GetOffset());
+
+}
+
+float Blueprint::GetColorAvg()
+{
+	D3DXVECTOR4 color = object2D->GetColor();
+	return (color.x + color.y + color.z) / 3.0f;
 }
 
 void Blueprint::SetSubType(BlueprintSubType type, int dataSize)

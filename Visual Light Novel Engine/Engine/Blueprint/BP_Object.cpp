@@ -9,15 +9,13 @@ BP_Object::BP_Object()
 	: origObject(nullptr)
 {
 	type = BlueprintType::OBJECT;
-	color = D3DXVECTOR4(255 / 255.0f, 239 / 255.0f, 224 / 255.0f, 1);
-	object2D->SetColor(color);
+	object2D->SetColor(D3DXVECTOR4(255 / 255.0f, 239 / 255.0f, 224 / 255.0f, 1));
 }
 
 BP_Object::BP_Object(Object2D * object)
 {
 	type = BlueprintType::OBJECT;
-	color = D3DXVECTOR4(255 / 255.0f, 239 / 255.0f, 224 / 255.0f, 1);
-	object2D->SetColor(color);
+	object2D->SetColor(D3DXVECTOR4(255 / 255.0f, 239 / 255.0f, 224 / 255.0f, 1));
 
 	objectData.Position = object->GetPosition() - object->GetOffset();
 	objectData.Rotation = object->GetRotation();
@@ -37,6 +35,15 @@ void BP_Object::Load(json & data)
 	objectData.Position = Util::StringToVector3(data["DATA"]["VALUE"].value("POSITION", ""));
 	objectData.Rotation = Util::StringToVector3(data["DATA"]["VALUE"].value("ROTATION", ""));
 	objectData.Scale = Util::StringToVector3(data["DATA"]["VALUE"].value("SCALE", ""));
+}
+
+void BP_Object::Save(json & data, int layer, int objIndex, int bpIndex)
+{
+	Blueprint::Save(data, layer, objIndex, bpIndex);
+	THISPATH(layer, objIndex, bpIndex)["DATA"]["VALUE"]["POSITION"] = Util::VectorToString(objectData.Position);
+	THISPATH(layer, objIndex, bpIndex)["DATA"]["VALUE"]["ROTATION"] = Util::VectorToString(objectData.Rotation);
+	THISPATH(layer, objIndex, bpIndex)["DATA"]["VALUE"]["SCALE"] = Util::VectorToString(objectData.Scale);
+	THISPATH(layer, objIndex, bpIndex)["DATA"]["VALUE"]["COLOR"] = Util::VectorToString(objectData.Color);
 }
 
 void BP_Object::SubUpdate()

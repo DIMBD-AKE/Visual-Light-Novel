@@ -1,0 +1,19 @@
+﻿<Window x:Class="Visual_Light_Novel_Element.CharacterDialogue"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Visual_Light_Novel_Element"
+        mc:Ignorable="d"
+        Title="CharacterDialogue" Height="180" Width="260" ResizeMode="NoResize">
+    <Grid>
+        <Button Content="확인" HorizontalAlignment="Left" Margin="81,116,0,0" VerticalAlignment="Top" Width="75" BorderBrush="#FFABADB3" Background="White" Click="Button_Click"/>
+        <TextBox x:Name="Input" HorizontalAlignment="Left" Height="23" Margin="9,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
+        <TextBlock x:Name="Explain" HorizontalAlignment="Left" Margin="10,7,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Width="222" TextAlignment="Center">
+            파츠와 상태명을 지정해주세요.<LineBreak/>
+            같은 상태의 모든 파츠를 보여줍니다.
+        </TextBlock>
+        <ComboBox x:Name="PartInput" HorizontalAlignment="Left" Margin="59,49,0,0" VerticalAlignment="Top" Width="120"/>
+
+    </Grid>
+</Window>

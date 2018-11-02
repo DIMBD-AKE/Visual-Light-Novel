@@ -3,13 +3,15 @@
 #include "../../Core/Components/Sequence.h"
 #include "../json.hpp"
 
+#define THISPATH(layer, objIndex, bpIndex) data["LAYER"][to_string(layer)]["OBJECT"][objIndex]["BLUEPRINT"]["LIST"][bpIndex]
+
 using namespace nlohmann;
 
 class Blueprint;
 
 enum class BlueprintType
 {
-	BEGIN,
+	FUNCTION,
 	OBJECT,
 	FLOAT,
 	SEQUENCE
@@ -61,6 +63,51 @@ struct BlueprintLinkData
 	UINT prev;
 };
 
+namespace BPFunction
+{
+	static string TypeToString(BlueprintType type)
+	{
+		string typeString;
+		if (type == BlueprintType::FUNCTION) typeString = "FUNCTION";
+		if (type == BlueprintType::FLOAT) typeString = "FLOAT";
+		if (type == BlueprintType::OBJECT) typeString = "OBJECT";
+		if (type == BlueprintType::SEQUENCE) typeString = "SEQUENCE";
+		return typeString;
+	}
+	static string SubTypeToString(BlueprintSubType subType)
+	{
+		string subtypeString;
+		if (subType == BlueprintSubType::NONE) subtypeString = "NONE";
+		if (subType == BlueprintSubType::SEQUENCE_QUEUE_BEZIER2) subtypeString = "SEQUENCE_QUEUE_BEZIER2";
+		if (subType == BlueprintSubType::SEQUENCE_QUEUE_BEZIER3) subtypeString = "SEQUENCE_QUEUE_BEZIER3";
+		if (subType == BlueprintSubType::SEQUENCE_QUEUE_EASEIN) subtypeString = "SEQUENCE_QUEUE_EASEIN";
+		if (subType == BlueprintSubType::SEQUENCE_QUEUE_EASEINOUT) subtypeString = "SEQUENCE_QUEUE_EASEINOUT";
+		if (subType == BlueprintSubType::SEQUENCE_QUEUE_EASEOUT) subtypeString = "SEQUENCE_QUEUE_EASEOUT";
+		if (subType == BlueprintSubType::SEQUENCE_QUEUE_LINEAR) subtypeString = "SEQUENCE_QUEUE_LINEAR";
+		return subtypeString;
+	}
+	static BlueprintType StringToType(string s)
+	{
+		BlueprintType type;
+		if (s.compare("FUNCTION") == 0) type = BlueprintType::FUNCTION;
+		if (s.compare("FLOAT") == 0) type = BlueprintType::FLOAT;
+		if (s.compare("OBJECT") == 0) type = BlueprintType::OBJECT;
+		if (s.compare("SEQUENCE") == 0) type = BlueprintType::SEQUENCE;
+		return type;
+	}
+	static BlueprintSubType StringToSubType(string s)
+	{
+		BlueprintSubType subType = BlueprintSubType::NONE;
+		if (s.compare("SEQUENCE_QUEUE_EASEIN") == 0) subType = BlueprintSubType::SEQUENCE_QUEUE_EASEIN;
+		if (s.compare("SEQUENCE_QUEUE_EASEOUT") == 0) subType = BlueprintSubType::SEQUENCE_QUEUE_EASEOUT;
+		if (s.compare("SEQUENCE_QUEUE_EASEINOUT") == 0) subType = BlueprintSubType::SEQUENCE_QUEUE_EASEINOUT;
+		if (s.compare("SEQUENCE_QUEUE_LINEAR") == 0) subType = BlueprintSubType::SEQUENCE_QUEUE_LINEAR;
+		if (s.compare("SEQUENCE_QUEUE_BEZIER2") == 0) subType = BlueprintSubType::SEQUENCE_QUEUE_BEZIER2;
+		if (s.compare("SEQUENCE_QUEUE_BEZIER3") == 0) subType = BlueprintSubType::SEQUENCE_QUEUE_BEZIER3;
+		return subType;
+	}
+}
+
 class Blueprint
 {
 public:
@@ -70,6 +117,7 @@ public:
 	void Render();
 
 	virtual void Load(json& data) {};
+	virtual void Save(json &data, int layer, int objIndex, int bpIndex);
 
 	void SetID(UINT id) { this->id = id; }
 	UINT GetID() { return id; }
@@ -78,7 +126,7 @@ public:
 
 	Object2D * GetObject2D() { return object2D; }
 	BlueprintType GetType() { return type; }
-	float GetColorAvg() { return (color.x + color.y + color.z) / 3.0f; }
+	float GetColorAvg();
 
 	BlueprintSubType GetSubType() { return subType; }
 	virtual void SetSubType(BlueprintSubType type, int dataSize);
@@ -92,7 +140,6 @@ protected:
 	UINT id;
 
 	Object2D * object2D;
-	D3DXVECTOR4 color;
 	BlueprintType type;
 	BlueprintSubType subType;
 
@@ -111,7 +158,7 @@ public:
 
 	void Update();
 	void Render();
-	void Save(json &data, int layer, int index);
+	void Save(json &data, int layer, int objIndex);
 	void Clear();
 
 	BlueprintObjectType GetType() { return type; }
@@ -121,7 +168,7 @@ public:
 	void SetOffset(D3DXVECTOR3 offset) { this->offset = offset; }
 	D3DXVECTOR3 GetOffset() { return offset; }
 	
-	void Excute();
+	void Excute(string funcName);
 	void ExcuteUpdate(GameObject * gameobject);
 
 	void Link(vector<BlueprintLinkData> linkData);

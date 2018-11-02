@@ -20,6 +20,16 @@ namespace Visual_Light_Novel_Element
     /// <summary>
     /// Character.xaml에 대한 상호 작용 논리
     /// </summary>
+
+    public enum CharacterPart
+    {
+        HEAD,
+        LEFT_BODY,
+        RIGHT_BODY,
+        FULL_BODY,
+        FULL
+    }
+
     public partial class Character : Page, IElement
     {
         public Character()
@@ -31,14 +41,16 @@ namespace Visual_Light_Novel_Element
         {
             var json = new JObject();
 
+            json.Add("TYPE", "CHARACTER");
             json.Add("NAME", Name.Text);
             json.Add("EXPLAIN", new TextRange(Explain.Document.ContentStart, Explain.Document.ContentEnd).Text);
 
             var state = new JArray();
-            foreach (Tuple<string, string> item in StateList.Items)
+            foreach (Tuple<Tuple<string, CharacterPart>, string> item in StateList.Items)
             {
                 var list = new JObject();
-                list.Add("NAME", item.Item1);
+                list.Add("NAME", item.Item1.Item1);
+                list.Add("PART", item.Item1.Item2.ToString());
                 list.Add("PATH", item.Item2);
                 state.Add(list);
             }
@@ -46,6 +58,28 @@ namespace Visual_Light_Novel_Element
             json.Add("STATE", state);
 
             return json;
+        }
+
+        public void SetJson(JObject json)
+        {
+            Name.Text = (string)json["NAME"];
+            Explain.Document.Blocks.Clear();
+            Explain.Document.Blocks.Add(new Paragraph(new Run((string)json["EXPLAIN"])));
+
+            foreach (var item in json["STATE"])
+            {
+                string state = (string)item["NAME"];
+                string partName = (string)item["PART"];
+                string path = (string)item["PATH"];
+                CharacterPart part = CharacterPart.HEAD;
+                if (partName == "HEAD") part = CharacterPart.HEAD;
+                if (partName == "LEFT_BODY") part = CharacterPart.LEFT_BODY;
+                if (partName == "RIGHT_BODY") part = CharacterPart.RIGHT_BODY;
+                if (partName == "FULL_BODY") part = CharacterPart.FULL_BODY;
+                if (partName == "FULL") part = CharacterPart.FULL;
+                Tuple<Tuple<string, CharacterPart>, string> data = new Tuple<Tuple<string, CharacterPart>, string>(new Tuple<string, CharacterPart>(state, part), path);
+                StateList.Items.Add(data);
+            }
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
@@ -61,11 +95,12 @@ namespace Visual_Light_Novel_Element
             {
                 string fileName = dialog.FileName;
                 fileName = fileName.Remove(0, dialog.InitialDirectory.Length);
-                InputDialogue input = new InputDialogue("상태 이름");
+                CharacterDialogue input = new CharacterDialogue();
                 if (input.ShowDialog() == true)
                 {
                     string stateName = input.Text;
-                    Tuple<string, string> data = new Tuple<string, string>(stateName, fileName);                
+                    CharacterPart part = input.Part;
+                    Tuple<Tuple<string, CharacterPart>, string> data = new Tuple<Tuple<string, CharacterPart>, string>(new Tuple<string, CharacterPart>(stateName, part), fileName);
                     StateList.Items.Add(data);
                 }
             }
@@ -78,18 +113,33 @@ namespace Visual_Light_Novel_Element
 
         private void StateList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (StateList.SelectedItem == null)
-            {
-                Preview.Source = null;
-                return;
-            }
-            string path = AppDomain.CurrentDomain.BaseDirectory + ((Tuple<string, string>)StateList.SelectedItem).Item2;
+            Preview_HEAD.Source = null;
+            Preview_LEFT_BODY.Source = null;
+            Preview_RIGHT_BODY.Source = null;
+            Preview_FULL_BODY.Source = null;
+            Preview_FULL.Source = null;
 
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            image.UriSource = new Uri(path);
-            image.EndInit();
-            Preview.Source = image;
+            if (StateList.SelectedItem == null)
+                return;
+
+            Tuple<Tuple<string, CharacterPart>, string> select = (Tuple<Tuple<string, CharacterPart>, string>)StateList.SelectedItem;
+
+            foreach (Tuple<Tuple<string, CharacterPart>, string> item in StateList.Items)
+            {
+                if (select.Item1.Item1 == item.Item1.Item1)
+                {
+                    string path = AppDomain.CurrentDomain.BaseDirectory + item.Item2;
+                    BitmapImage image = new BitmapImage();
+                    image.BeginInit();
+                    image.UriSource = new Uri(path);
+                    image.EndInit();
+                    if (item.Item1.Item2 == CharacterPart.HEAD) Preview_HEAD.Source = image;
+                    if (item.Item1.Item2 == CharacterPart.LEFT_BODY) Preview_LEFT_BODY.Source = image;
+                    if (item.Item1.Item2 == CharacterPart.RIGHT_BODY) Preview_RIGHT_BODY.Source = image;
+                    if (item.Item1.Item2 == CharacterPart.FULL_BODY) Preview_FULL_BODY.Source = image;
+                    if (item.Item1.Item2 == CharacterPart.FULL) Preview_FULL.Source = image;
+                }
+            }
         }
     }
 }

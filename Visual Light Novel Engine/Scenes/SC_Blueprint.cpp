@@ -27,6 +27,10 @@ void SC_Blueprint::Init()
 	UIAction action;
 	action.Type = UIActionType::CUSTOM_FUNCTION;
 
+	action.CustomFunction = bind(&SC_Blueprint::CreateBlueprint, this, BlueprintType::FUNCTION);
+	listData.Text = L"Function";
+	listData.Action = action;
+	list.push_back(listData);
 	action.CustomFunction = bind(&SC_Blueprint::CreateBlueprint, this, BlueprintType::OBJECT);
 	listData.Text = L"Object Data";
 	listData.Action = action;
@@ -127,12 +131,13 @@ void SC_Blueprint::Render()
 	createUI->Render();
 
 	(*selectObject)->GetBlueprint()->Render();
-	if ((*selectObject)->GetBlueprint()->GetSelectNode())
+	BlueprintNode * selNode = (*selectObject)->GetBlueprint()->GetSelectNode();
+	if (selNode)
 	{
-		if ((*selectObject)->GetBlueprint()->GetSelectNode()->data->GetType() == BlueprintType::SEQUENCE)
+		if (selNode->data->GetType() == BlueprintType::SEQUENCE)
 		{
 			seqListUI->Render();
-			seqDataListUI->Render((*selectObject)->GetBlueprint()->GetSelectNode()->data->GetSubData().size());
+			seqDataListUI->Render(selNode->data->GetSubData().size());
 		}
 	}
 }

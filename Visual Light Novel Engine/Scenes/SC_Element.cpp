@@ -21,15 +21,15 @@ void SC_Element::Init()
 	action.Type = UIActionType::CUSTOM_FUNCTION;
 	
 	action.CustomFunction = bind(&SC_Element::Test, this);
-	listData.Text = L"캐릭터";
+	listData.Text = L"Character";
 	listData.Action = action;
 	list.push_back(listData);
 	action.CustomFunction = bind(&SC_Element::Test, this);
-	listData.Text = L"물건";
+	listData.Text = L"Stuff";
 	listData.Action = action;
 	list.push_back(listData);
 	action.CustomFunction = bind(&SC_Element::Test, this);
-	listData.Text = L"배경";
+	listData.Text = L"Background";
 	listData.Action = action;
 	list.push_back(listData);
 

@@ -23,15 +23,30 @@ namespace Visual_Light_Novel_Element
     /// </summary>
     public partial class MainWindow : Window
     {
+        public enum ElementType
+        {
+            Character,
+            Background,
+            Stuff
+        }
+
         public MainWindow()
         {
             InitializeComponent();
+            TypeBox.Items.Add(ElementType.Character);
+            TypeBox.Items.Add(ElementType.Background);
+            TypeBox.Items.Add(ElementType.Stuff);
         }
 
         private void Type_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (TypeBox.SelectedItem.ToString().Contains("캐릭터"))
+            ElementType sel = (ElementType)TypeBox.SelectedItem;
+            if (sel == ElementType.Character)
                 Main.Content = new Character();
+            if (sel == ElementType.Background)
+                Main.Content = new Background();
+            if (sel == ElementType.Stuff)
+                Main.Content = new Stuff();
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -50,6 +65,45 @@ namespace Visual_Light_Novel_Element
             {
                 JObject json = ((IElement)Main.Content).GetJson();
                 File.WriteAllText(dialog.FileName, json.ToString());
+            }
+        }
+
+        private void Load_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
+
+            dialog.Filter = "Json (*.json)|*.json";
+            dialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            bool? result = dialog.ShowDialog();
+            
+            if (result == true)
+            {
+                var content = File.ReadAllText(dialog.FileName);
+                JObject json = JObject.Parse(content);
+
+                string type = (string)json["TYPE"];
+
+                IElement element = null;
+
+                if (type == "CHARACTER")
+                {
+                    element = new Character();
+                    TypeBox.SelectedItem = ElementType.Character;
+                }
+                if (type == "BACKGROUND")
+                {
+                    element = new Background();
+                    TypeBox.SelectedItem = ElementType.Background;
+                }
+                if (type == "STUFF")
+                {
+                    element = new Stuff();
+                    TypeBox.SelectedItem = ElementType.Stuff;
+                }
+
+                element.SetJson(json);
+                Main.Content = element;
             }
         }
     }

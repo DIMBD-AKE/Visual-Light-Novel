@@ -1,0 +1,37 @@
+{
+  "TYPE": "CHARACTER",
+  "NAME": "나츠키",
+  "EXPLAIN": "귀여운 분홍 고양이!\r\n같이 쿠키를 만들고 싶다...\r\n",
+  "STATE": [
+    {
+      "NAME": "기본 - 교복",
+      "PART": "HEAD",
+      "PATH": "Images\\Natsuki\\1t.png"
+    },
+    {
+      "NAME": "기본 - 교복",
+      "PART": "LEFT_BODY",
+      "PATH": "Images\\Natsuki\\1l.png"
+    },
+    {
+      "NAME": "기본 - 교복",
+      "PART": "RIGHT_BODY",
+      "PATH": "Images\\Natsuki\\1r.png"
+    },
+    {
+      "NAME": "기본 - 평상복",
+      "PART": "HEAD",
+      "PATH": "Images\\Natsuki\\1t.png"
+    },
+    {
+      "NAME": "기본 - 평상복",
+      "PART": "LEFT_BODY",
+      "PATH": "Images\\Natsuki\\1bl.png"
+    },
+    {
+      "NAME": "기본 - 평상복",
+      "PART": "RIGHT_BODY",
+      "PATH": "Images\\Natsuki\\1br.png"
+    }
+  ]
+}

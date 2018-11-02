@@ -153,6 +153,9 @@
     <ClInclude Include="Engine\Element.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Blueprint\BP_Function.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Visual Light Novel Engine.cpp">
@@ -267,6 +270,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Blueprint\BP_Float.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Blueprint\BP_Function.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

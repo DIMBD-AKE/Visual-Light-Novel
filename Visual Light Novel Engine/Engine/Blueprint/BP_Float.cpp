@@ -7,8 +7,7 @@ BP_Float::BP_Float()
 	: value(0)
 {
 	type = BlueprintType::FLOAT;
-	color = D3DXVECTOR4(1, 204 / 255.0f, 204 / 255.0f, 1);
-	object2D->SetColor(color);
+	object2D->SetColor(D3DXVECTOR4(1, 204 / 255.0f, 204 / 255.0f, 1));
 }
 
 
@@ -20,6 +19,12 @@ void BP_Float::Load(json & data)
 {
 	string floatValue = data["DATA"]["VALUE"].value("FLOAT", "");
 	value = atof(floatValue.c_str());
+}
+
+void BP_Float::Save(json & data, int layer, int objIndex, int bpIndex)
+{
+	Blueprint::Save(data, layer, objIndex, bpIndex);
+	THISPATH(layer, objIndex, bpIndex)["DATA"]["VALUE"]["FLOAT"] = to_string(value);
 }
 
 void BP_Float::SubUpdate()

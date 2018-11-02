@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Blueprint\BP_Function.h" />
     <ClInclude Include="Engine\Blueprint\BP_Float.h" />
     <ClInclude Include="Core\DirectX\ConstantBuffer.h" />
     <ClInclude Include="Engine\Blueprint\BP_Object.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Core\Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Blueprint\BP_Function.cpp" />
     <ClCompile Include="Engine\Blueprint\BP_Float.cpp" />
     <ClCompile Include="Core\DirectX\ConstantBuffer.cpp" />
     <ClCompile Include="Engine\Blueprint\BP_Object.cpp" />

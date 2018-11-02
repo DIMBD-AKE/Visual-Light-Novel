@@ -8,6 +8,7 @@ public:
 	virtual ~BP_Float(); 
 	
 	virtual void Load(json& data);
+	virtual void Save(json &data, int layer, int objIndex, int bpIndex) override;
 	virtual void SubUpdate() override;
 
 	float GetValue() { return value; }

@@ -3,9 +3,9 @@
 
 bool Transform::operator==(Transform & tf)
 {
-	if (D3DXVec3LengthSq(&(GetPosition() - tf.GetPosition())) > 0.01f) return false;
-	if (D3DXVec3LengthSq(&(GetRotation() - tf.GetRotation())) > 0.01f) return false;
-	if (D3DXVec3LengthSq(&(GetScale() - tf.GetScale())) > 0.01f) return false;
+	if (D3DXVec3LengthSq(&(GetPosition() - tf.GetPosition())) > FLT_EPSILON) return false;
+	if (D3DXVec3LengthSq(&(GetRotation() - tf.GetRotation())) > FLT_EPSILON) return false;
+	if (D3DXVec3LengthSq(&(GetScale() - tf.GetScale())) > FLT_EPSILON) return false;
 	return true;
 }
 
