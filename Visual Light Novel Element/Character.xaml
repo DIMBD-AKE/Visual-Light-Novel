@@ -28,10 +28,6 @@
         <TextBlock HorizontalAlignment="Left" Margin="10,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="상태 이미지"/>
         <Button Content="추가" HorizontalAlignment="Left" Margin="88,491,0,0" VerticalAlignment="Top" Width="75" Background="White" BorderBrush="#FFABADB3" Click="Add_Click"/>
         <Button Content="삭제" HorizontalAlignment="Left" Margin="168,491,0,0" VerticalAlignment="Top" Width="75" Background="White" BorderBrush="#FFABADB3" Click="Delete_Click"/>
-        <Image x:Name="Preview_HEAD" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="501" Margin="334,10,0,0" VerticalAlignment="Top" Width="350"/>
-        <Image x:Name="Preview_LEFT_BODY" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="501" Margin="334,10,0,0" VerticalAlignment="Top" Width="350"/>
-        <Image x:Name="Preview_RIGHT_BODY" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="501" Margin="334,10,0,0" VerticalAlignment="Top" Width="350"/>
-        <Image x:Name="Preview_FULL_BODY" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="501" Margin="334,10,0,0" VerticalAlignment="Top" Width="350"/>
-        <Image x:Name="Preview_FULL" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="501" Margin="334,10,0,0" VerticalAlignment="Top" Width="350"/>
+        <Image x:Name="Preview" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="501" Margin="334,10,0,0" VerticalAlignment="Top" Width="350"/>
     </Grid>
 </Page>

@@ -2,7 +2,7 @@
 #include "BP_Object.h"
 #include "../../Core/Util.h"
 #include "../../Scenes/SC_Editor.h"
-
+#include "../Object/Object.h"
 
 
 BP_Object::BP_Object()
@@ -12,7 +12,7 @@ BP_Object::BP_Object()
 	object2D->SetColor(D3DXVECTOR4(255 / 255.0f, 239 / 255.0f, 224 / 255.0f, 1));
 }
 
-BP_Object::BP_Object(Object2D * object)
+BP_Object::BP_Object(GameObject * object)
 {
 	type = BlueprintType::OBJECT;
 	object2D->SetColor(D3DXVECTOR4(255 / 255.0f, 239 / 255.0f, 224 / 255.0f, 1));

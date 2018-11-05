@@ -1,6 +1,6 @@
 #pragma once
 
-class UI;
+class UIObject;
 class Layer;
 enum class GameScene;
 
@@ -16,10 +16,7 @@ public:
 	virtual bool Release() override;
 
 private:
-	void ProjectSave();
-	void ProjectLoad();
-	void SceneLoad(string path, map<GameScene, Layer*>& sceneLayer);
 
-	UI * sideUI;
+	UIObject * sideUIObject;
 };
 

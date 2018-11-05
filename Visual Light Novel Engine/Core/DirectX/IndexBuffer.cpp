@@ -26,6 +26,7 @@ void IndexBuffer::Create(vector<ULONG>& indices, string window)
 	indexData.SysMemSlicePitch = 0;
 
 	this->window = window;
+	context = GRAPHICS->GetDeviceContext(window);
 
 	HRESULT hr = GRAPHICS->GetDevice(window)->CreateBuffer(&indexBufferDesc, &indexData, &buffer);
 	assert(SUCCEEDED(hr));
@@ -33,5 +34,5 @@ void IndexBuffer::Create(vector<ULONG>& indices, string window)
 
 void IndexBuffer::IASet()
 {
-	GRAPHICS->GetDeviceContext(window)->IASetIndexBuffer(buffer, DXGI_FORMAT_R32_UINT, 0);
+	context->IASetIndexBuffer(buffer, DXGI_FORMAT_R32_UINT, 0);
 }

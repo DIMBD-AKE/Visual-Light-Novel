@@ -54,7 +54,7 @@ float4 PS(PixelInput input) : SV_TARGET
     float alphaLeft = shaderTexture.Sample(sampleType, input.tex - float2(pixel.x, 0)).a;
     float avg = (alphaUp + alphaDown + alphaRight + alphaLeft) / 4;
 
-    if (avg > 0 && avg < 1)
+    if (avg > 0.05 && avg < 0.95)
         return lerp(albedo * color, outline, avg);
     else
         return albedo * color;

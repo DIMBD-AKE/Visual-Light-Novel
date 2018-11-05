@@ -2,7 +2,6 @@
 #include "Main.h"
 #include "../Scenes/SC_Preview.h"
 #include "../Scenes/SC_Menu.h"
-#include "../Scenes/SC_Element.h"
 #include "../Scenes/SC_Tool.h"
 #include "../Scenes/SC_Editor.h"
 #include "../Scenes/SC_Blueprint.h"
@@ -27,7 +26,6 @@ void Main::Init()
 	SCENE->AddScene(new SC_Tool(), "Tool");
 	SCENE->ChangeScene("Tool", "Tool");
 
-	SCENE->AddScene(new SC_Element(), "Element");
 	SCENE->AddScene(new SC_Editor(), "Editor");
 
 	SCENE->AddScene(new SC_Blueprint(), "Blueprint");

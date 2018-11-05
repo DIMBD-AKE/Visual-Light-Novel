@@ -1,7 +1,9 @@
 #pragma once
 #include "../Engine/Layer.h"
 
-class UI;
+class UIObject;
+class Object2D;
+class ElementObject;
 
 enum class GameScene
 {
@@ -9,7 +11,7 @@ enum class GameScene
 	GAME,
 	OPTION,
 	CG,
-	SELECT,
+	SELECT
 };
 
 class SC_Editor : public IScene
@@ -23,8 +25,8 @@ public:
 	virtual void Render() override;
 	virtual bool Release() override;
 
-	Object2D * GetSelectObject() { return selectObject.object; }
-	Object2D ** GetSelectObjectAddress() { return &selectObject.object; }
+	GameObject * GetSelectObject() { return selectObject.object; }
+	GameObject ** GetSelectObjectAddress() { return &selectObject.object; }
 	Layer * GetLayer() { return objectLayer; }
 
 	void SetSceneLayer(map<GameScene, Layer*> sceneLayer);
@@ -42,7 +44,7 @@ private:
 	bool SelectEditType();
 	void ApplyEdit();
 
-	void ChangeAnchor(ImageAnchor anchor) { selectObject.object->SetAnchor(anchor); }
+	void ChangeAnchor(VertexAnchor anchor) { selectObject.object->SetAnchor(anchor); }
 	void ChangeLayer(int layer) { objectLayer->ChangeLayer(selectObject.layer + layer, &selectObject); }
 	void ChangeColor();
 
@@ -64,11 +66,11 @@ private:
 	map<GameScene, Layer*> sceneLayer;
 
 	// Scene
-	UI * sceneUI;
+	UIObject * sceneUIObject;
 
 	// Info
-	UI * anchorUI[5] = { nullptr, };
-	UI * layerUI[2] = { nullptr, };
-	UI * colorUI = nullptr;
+	UIObject * anchorUIObject[5] = { nullptr, };
+	UIObject * layerUIObject[2] = { nullptr, };
+	UIObject * colorUIObject = nullptr;
 };
 

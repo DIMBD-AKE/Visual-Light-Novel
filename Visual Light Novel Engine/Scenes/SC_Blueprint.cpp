@@ -1,14 +1,14 @@
 #include "../stdafx.h"
 #include "SC_Blueprint.h"
-#include "../Engine/UI.h"
+#include "../Engine/Object/Object.h"
 #include "SC_Editor.h"
 #include "../Engine/Blueprint/BP_Object.h"
 
 SC_Blueprint::SC_Blueprint()
 	: selectObject(nullptr)
-	, createUI(nullptr)
-	, seqListUI(nullptr)
-	, seqDataListUI(nullptr)
+	, createUIObject(nullptr)
+	, seqListUIObject(nullptr)
+	, seqDataListUIObject(nullptr)
 	, dataIndex(-1)
 {
 }
@@ -22,10 +22,10 @@ void SC_Blueprint::Init()
 {
 	selectObject = static_cast<SC_Editor*>(SCENE->GetScene("Editor"))->GetSelectObjectAddress();
 
-	vector<UIList> list;
-	UIList listData;
-	UIAction action;
-	action.Type = UIActionType::CUSTOM_FUNCTION;
+	vector<UIObjectList> list;
+	UIObjectList listData;
+	UIObjectAction action;
+	action.Type = UIObjectActionType::CUSTOM_FUNCTION;
 
 	action.CustomFunction = bind(&SC_Blueprint::CreateBlueprint, this, BlueprintType::FUNCTION);
 	listData.Text = L"Function";
@@ -43,9 +43,9 @@ void SC_Blueprint::Init()
 	listData.Text = L"Sequence";
 	listData.Action = action;
 	list.push_back(listData);
-	createUI = new UI(UIType::LISTH, "Blueprint", "Images/UI/Menu Button.png");
-	createUI->SetList(list);
-	createUI->SetAction(action);
+	createUIObject = new UIObject(UIObjectType::LISTH, "Blueprint", "Images/UI/Menu Button.png");
+	createUIObject->SetList(list);
+	createUIObject->SetAction(action);
 
 	list.clear();
 	action.CustomFunction = bind(&SC_Blueprint::ChangeBlueprintSubType, this, BlueprintSubType::SEQUENCE_QUEUE_EASEIN, 4);
@@ -72,9 +72,9 @@ void SC_Blueprint::Init()
 	listData.Text = L"Bezier3";
 	listData.Action = action;
 	list.push_back(listData);
-	seqListUI = new UI(UIType::LISTV, "Blueprint", "Images/UI/Menu Button.png");
-	seqListUI->SetList(list);
-	seqListUI->SetPosition(0, 100, 0);
+	seqListUIObject = new UIObject(UIObjectType::LISTV, "Blueprint", "Images/UI/Menu Button.png");
+	seqListUIObject->SetList(list);
+	seqListUIObject->SetPosition(0, 100, 0);
 
 	list.clear();
 	action.CustomFunction = bind(&SC_Blueprint::SetSubData, this, 0);
@@ -101,25 +101,25 @@ void SC_Blueprint::Init()
 	listData.Text = L"Object 3";
 	listData.Action = action;
 	list.push_back(listData);
-	seqDataListUI = new UI(UIType::LISTV, "Blueprint", "Images/UI/Menu Button.png");
-	seqDataListUI->SetList(list);
-	seqDataListUI->GetObject2D()->SetAnchor(ImageAnchor::RIGHT_TOP);
-	seqDataListUI->SetPosition(1280, 100, 0);
+	seqDataListUIObject = new UIObject(UIObjectType::LISTV, "Blueprint", "Images/UI/Menu Button.png");
+	seqDataListUIObject->SetList(list);
+	seqDataListUIObject->GetObject2D()->SetAnchor(VertexAnchor::RIGHT_TOP);
+	seqDataListUIObject->SetPosition(1280, 100, 0);
 }
 
 void SC_Blueprint::Update()
 {
 	if (!*selectObject) return;
 
-	createUI->Update();
+	createUIObject->Update();
 
 	(*selectObject)->GetBlueprint()->Update();
 	if ((*selectObject)->GetBlueprint()->GetSelectNode())
 	{
 		if ((*selectObject)->GetBlueprint()->GetSelectNode()->data->GetType() == BlueprintType::SEQUENCE)
 		{
-			seqListUI->Update();
-			seqDataListUI->Update();
+			seqListUIObject->Update();
+			seqDataListUIObject->Update();
 		}
 	}
 }
@@ -128,7 +128,7 @@ void SC_Blueprint::Render()
 {
 	if (!*selectObject) return;
 
-	createUI->Render();
+	createUIObject->Render();
 
 	(*selectObject)->GetBlueprint()->Render();
 	BlueprintNode * selNode = (*selectObject)->GetBlueprint()->GetSelectNode();
@@ -136,17 +136,17 @@ void SC_Blueprint::Render()
 	{
 		if (selNode->data->GetType() == BlueprintType::SEQUENCE)
 		{
-			seqListUI->Render();
-			seqDataListUI->Render(selNode->data->GetSubData().size());
+			seqListUIObject->Render();
+			seqDataListUIObject->Render(selNode->data->GetSubData().size());
 		}
 	}
 }
 
 bool SC_Blueprint::Release()
 {
-	SAFE_DELETE(createUI);
-	SAFE_DELETE(seqListUI);
-	SAFE_DELETE(seqDataListUI);
+	SAFE_DELETE(createUIObject);
+	SAFE_DELETE(seqListUIObject);
+	SAFE_DELETE(seqDataListUIObject);
 	return true;
 }
 

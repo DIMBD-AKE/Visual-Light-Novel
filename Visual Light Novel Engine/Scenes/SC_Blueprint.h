@@ -2,7 +2,7 @@
 #include "../Core/System/Scene.h"
 #include "../Engine/Blueprint/Blueprint.h"
 
-class UI;
+class UIObject;
 
 class SC_Blueprint : public IScene
 {
@@ -23,12 +23,12 @@ private:
 	void SetSubData(int index);
 
 private:
-	UI * createUI;
-	UI * seqListUI;
-	UI * seqDataListUI;
+	UIObject * createUIObject;
+	UIObject * seqListUIObject;
+	UIObject * seqDataListUIObject;
 
 	int dataIndex;
 
-	Object2D ** selectObject;
+	GameObject ** selectObject;
 };
 

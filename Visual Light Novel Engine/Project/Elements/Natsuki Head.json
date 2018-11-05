@@ -1,0 +1,19 @@
+{
+  "TYPE": "STUFF",
+  "NAME": "나츠키의 머리",
+  "EXPLAIN": "호에엥\r\n",
+  "STATE": [
+    {
+      "NAME": "눈이 없엉",
+      "PATH": "Images\\Natsuki\\0.png"
+    },
+    {
+      "NAME": "일반",
+      "PATH": "Images\\Natsuki\\1t.png"
+    },
+    {
+      "NAME": "귀여운",
+      "PATH": "Images\\Natsuki\\v.png"
+    }
+  ]
+}

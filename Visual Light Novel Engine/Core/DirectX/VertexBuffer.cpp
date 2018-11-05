@@ -11,5 +11,5 @@ VertexBuffer::~VertexBuffer()
 void VertexBuffer::IASet()
 {
 	UINT offset = 0;
-	GRAPHICS->GetDeviceContext(window)->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
+	context->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
 }

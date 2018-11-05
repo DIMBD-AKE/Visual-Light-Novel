@@ -18,4 +18,3 @@
 
 #include "Resource/Texture2D.h"
 #include "Resource/Shader.h"
-#include "Resource/Object2D.h"

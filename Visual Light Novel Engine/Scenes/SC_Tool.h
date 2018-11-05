@@ -1,6 +1,8 @@
 #pragma once
 
-class UI;
+class UIObject;
+
+#define TOOLCOUNT 3
 
 class SC_Tool : public IScene
 {
@@ -14,11 +16,11 @@ public:
 	virtual bool Release() override;
 
 private:
-	void CreateObject2D();
-	void CreateUI();
+	void CreateImage();
+	void CreateCharacter();
+	void CreateUIObject();
 
 private:
-	UI * btnImage;
-	UI * btnUI;
+	UIObject * toolUIObject[TOOLCOUNT];
 };
 

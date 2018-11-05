@@ -39,7 +39,7 @@ void DirectWrite::Init(string window)
 	HRESULT hr = DWriteCreateFactory
 	(
 		DWRITE_FACTORY_TYPE_SHARED,
-		_uuidof(IDWriteFactory),
+		__uuidof(IDWriteFactory),
 		reinterpret_cast<IUnknown**>(&write.WriteFactory)
 	);
 	assert(SUCCEEDED(hr));
@@ -55,7 +55,7 @@ void DirectWrite::Init(string window)
 	assert(SUCCEEDED(hr));
 
 	IDXGISurface * dxgiSurface = nullptr;
-	hr = GRAPHICS->GetSwapChain(window)->GetBuffer(0, _uuidof(IDXGISurface), reinterpret_cast<void**>(&dxgiSurface));
+	hr = GRAPHICS->GetSwapChain(window)->GetBuffer(0, __uuidof(IDXGISurface), reinterpret_cast<void**>(&dxgiSurface));
 	assert(SUCCEEDED(hr));
 
 	hr = factory->CreateDevice(dxgiDevice, &write.WriteDevice);

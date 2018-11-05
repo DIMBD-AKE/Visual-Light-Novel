@@ -28,6 +28,7 @@ public:
 
 private:
 	ID3D11Buffer * buffer;
+	ID3D11DeviceContext * context;
 	string window;
 	UINT stride;
 };
@@ -52,6 +53,7 @@ inline void VertexBuffer::Create(vector<T>& vertices, string window)
 
 	stride = sizeof(T);
 	this->window = window;
+	context = GRAPHICS->GetDeviceContext(window);
 
 	HRESULT hr = GRAPHICS->GetDevice(window)->CreateBuffer(&vertexBufferDesc, &vertexData, &buffer);
 	assert(SUCCEEDED(hr));
@@ -63,11 +65,11 @@ inline void VertexBuffer::Mapped(vector<T>& vertices)
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	T * verticesPtr;
 
-	HRESULT hr = GRAPHICS->GetDeviceContext(window)->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	HRESULT hr = context->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	assert(SUCCEEDED(hr));
 
 	verticesPtr = static_cast<T*>(mappedResource.pData);
 	memcpy(verticesPtr, (void*)vertices.data(), sizeof(T) * vertices.size());
 
-	GRAPHICS->GetDeviceContext(window)->Unmap(buffer, 0);
+	context->Unmap(buffer, 0);
 }

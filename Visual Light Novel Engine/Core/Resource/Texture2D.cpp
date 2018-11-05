@@ -27,7 +27,7 @@ void * Texture2D::GetResource()
 
 void Texture2D::CreateTextureFromFile(string filePath, string window)
 {
-	HRESULT hr = D3DX11CreateShaderResourceViewFromFileA
+	HRESULT hr = D3DX11CreateShaderResourceViewFromFile
 	(
 		GRAPHICS->GetDevice(window),
 		filePath.c_str(),

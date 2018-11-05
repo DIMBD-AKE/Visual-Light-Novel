@@ -1,6 +1,6 @@
 #include "../stdafx.h"
 #include "SC_Editor.h"
-#include "../Engine/UI.h"
+#include "../Engine/Object/Object.h"
 #include <commdlg.h>
 
 SC_Editor::SC_Editor()
@@ -17,82 +17,82 @@ SC_Editor::~SC_Editor()
 void SC_Editor::Init()
 {
 	ChangeScene(GameScene::TITLE);
-	// Anchor UI
+	// Anchor UIObject
 
 	D3DXVECTOR3 anchorPos(35, 95, 0);
-	UIAction action;
-	action.Type = UIActionType::CUSTOM_FUNCTION;
+	UIObjectAction action;
+	action.Type = UIObjectActionType::CUSTOM_FUNCTION;
 
-	action.CustomFunction = bind(&SC_Editor::ChangeAnchor, this, ImageAnchor::LEFT_TOP);
-	anchorUI[0] = new UI(UIType::SINGLE, "Info", "Images/UI/Info - Anchor Corner.png");
-	anchorUI[0]->SetPosition(anchorPos);
-	anchorUI[0]->GetObject2D()->SetAnchor(ImageAnchor::CENTER);
-	anchorUI[0]->SetAction(action);
+	action.CustomFunction = bind(&SC_Editor::ChangeAnchor, this, VertexAnchor::LEFT_TOP);
+	anchorUIObject[0] = new UIObject(UIObjectType::SINGLE, "Info", "Images/UI/Info - Anchor Corner.png");
+	anchorUIObject[0]->SetPosition(anchorPos);
+	anchorUIObject[0]->GetObject2D()->SetAnchor(VertexAnchor::CENTER);
+	anchorUIObject[0]->SetAction(action);
 
-	float size = anchorUI[0]->GetObject2D()->GetTexture2D()->GetDesc().Width;
+	float size = anchorUIObject[0]->GetObject2D()->GetTexture2D()->GetDesc().Width;
 
-	action.CustomFunction = bind(&SC_Editor::ChangeAnchor, this, ImageAnchor::RIGHT_TOP);
-	anchorUI[1] = new UI(UIType::SINGLE, "Info", "Images/UI/Info - Anchor Corner.png");
-	anchorUI[1]->SetPosition(anchorPos.x + size * 1.5, anchorPos.y, 0);
-	anchorUI[1]->SetRotation(0, 0, -90);
-	anchorUI[1]->GetObject2D()->SetAnchor(ImageAnchor::CENTER);
-	anchorUI[1]->SetAction(action);
+	action.CustomFunction = bind(&SC_Editor::ChangeAnchor, this, VertexAnchor::RIGHT_TOP);
+	anchorUIObject[1] = new UIObject(UIObjectType::SINGLE, "Info", "Images/UI/Info - Anchor Corner.png");
+	anchorUIObject[1]->SetPosition(anchorPos.x + size * 1.5, anchorPos.y, 0);
+	anchorUIObject[1]->SetRotation(0, 0, -90);
+	anchorUIObject[1]->GetObject2D()->SetAnchor(VertexAnchor::CENTER);
+	anchorUIObject[1]->SetAction(action);
 
-	action.CustomFunction = bind(&SC_Editor::ChangeAnchor, this, ImageAnchor::LEFT_BOTTOM);
-	anchorUI[2] = new UI(UIType::SINGLE, "Info", "Images/UI/Info - Anchor Corner.png");
-	anchorUI[2]->SetPosition(anchorPos.x, anchorPos.y + size, 0);
-	anchorUI[2]->SetRotation(0, 0, 90);
-	anchorUI[2]->GetObject2D()->SetAnchor(ImageAnchor::CENTER);
-	anchorUI[2]->SetAction(action);
+	action.CustomFunction = bind(&SC_Editor::ChangeAnchor, this, VertexAnchor::LEFT_BOTTOM);
+	anchorUIObject[2] = new UIObject(UIObjectType::SINGLE, "Info", "Images/UI/Info - Anchor Corner.png");
+	anchorUIObject[2]->SetPosition(anchorPos.x, anchorPos.y + size, 0);
+	anchorUIObject[2]->SetRotation(0, 0, 90);
+	anchorUIObject[2]->GetObject2D()->SetAnchor(VertexAnchor::CENTER);
+	anchorUIObject[2]->SetAction(action);
 
-	action.CustomFunction = bind(&SC_Editor::ChangeAnchor, this, ImageAnchor::RIGHT_BOTTOM);
-	anchorUI[3] = new UI(UIType::SINGLE, "Info", "Images/UI/Info - Anchor Corner.png");
-	anchorUI[3]->SetPosition(anchorPos.x + size * 1.5, anchorPos.y + size, 0);
-	anchorUI[3]->SetRotation(0, 0, 180);
-	anchorUI[3]->GetObject2D()->SetAnchor(ImageAnchor::CENTER);
-	anchorUI[3]->SetAction(action);
+	action.CustomFunction = bind(&SC_Editor::ChangeAnchor, this, VertexAnchor::RIGHT_BOTTOM);
+	anchorUIObject[3] = new UIObject(UIObjectType::SINGLE, "Info", "Images/UI/Info - Anchor Corner.png");
+	anchorUIObject[3]->SetPosition(anchorPos.x + size * 1.5, anchorPos.y + size, 0);
+	anchorUIObject[3]->SetRotation(0, 0, 180);
+	anchorUIObject[3]->GetObject2D()->SetAnchor(VertexAnchor::CENTER);
+	anchorUIObject[3]->SetAction(action);
 
-	action.CustomFunction = bind(&SC_Editor::ChangeAnchor, this, ImageAnchor::CENTER);
-	anchorUI[4] = new UI(UIType::SINGLE, "Info", "Images/UI/Info - Anchor Center.png");
-	anchorUI[4]->SetPosition(anchorPos.x + size * 0.75, anchorPos.y + size * 0.5, 0);
-	anchorUI[4]->GetObject2D()->SetAnchor(ImageAnchor::CENTER);
-	anchorUI[4]->SetAction(action);
+	action.CustomFunction = bind(&SC_Editor::ChangeAnchor, this, VertexAnchor::CENTER);
+	anchorUIObject[4] = new UIObject(UIObjectType::SINGLE, "Info", "Images/UI/Info - Anchor Center.png");
+	anchorUIObject[4]->SetPosition(anchorPos.x + size * 0.75, anchorPos.y + size * 0.5, 0);
+	anchorUIObject[4]->GetObject2D()->SetAnchor(VertexAnchor::CENTER);
+	anchorUIObject[4]->SetAction(action);
 
 	action.CustomFunction = bind(&SC_Editor::ChangeLayer, this, 1);
-	layerUI[0] = new UI(UIType::SINGLE, "Info", "Images/UI/Info - Layer Arrow.png");
-	layerUI[0]->SetPosition(170, 135, 0);
-	layerUI[0]->GetObject2D()->SetAnchor(ImageAnchor::CENTER);
-	layerUI[0]->SetAction(action);
+	layerUIObject[0] = new UIObject(UIObjectType::SINGLE, "Info", "Images/UI/Info - Layer Arrow.png");
+	layerUIObject[0]->SetPosition(170, 135, 0);
+	layerUIObject[0]->GetObject2D()->SetAnchor(VertexAnchor::CENTER);
+	layerUIObject[0]->SetAction(action);
 
 	action.CustomFunction = bind(&SC_Editor::ChangeLayer, this, -1);
-	layerUI[1] = new UI(UIType::SINGLE, "Info", "Images/UI/Info - Layer Arrow.png");
-	layerUI[1]->SetPosition(220, 135, 0);
-	layerUI[1]->SetRotation(0, 0, 180);
-	layerUI[1]->GetObject2D()->SetAnchor(ImageAnchor::CENTER);
-	layerUI[1]->SetAction(action);
+	layerUIObject[1] = new UIObject(UIObjectType::SINGLE, "Info", "Images/UI/Info - Layer Arrow.png");
+	layerUIObject[1]->SetPosition(220, 135, 0);
+	layerUIObject[1]->SetRotation(0, 0, 180);
+	layerUIObject[1]->GetObject2D()->SetAnchor(VertexAnchor::CENTER);
+	layerUIObject[1]->SetAction(action);
 
 	action.CustomFunction = bind(&SC_Editor::ChangeColor, this);
-	colorUI = new UI(UIType::SINGLE, "Info", "Images/UI/Info - Color.png");
-	colorUI->SetPosition(22, 180, 0);
-	colorUI->SetAction(action);
+	colorUIObject = new UIObject(UIObjectType::SINGLE, "Info", "Images/UI/Info - Color.png");
+	colorUIObject->SetPosition(22, 180, 0);
+	colorUIObject->SetAction(action);
 
 	// Edit Circle
 
 	editCircle = new Object2D("Game", "Images/UI/Edit - Scale Rotation.png");
 
-	vector<UIList> list;
-	UIList listData;
+	vector<UIObjectList> list;
+	UIObjectList listData;
 	action.CustomFunction = bind(&SC_Editor::ChangeScene, this, GameScene::TITLE);
 	listData.Action = action;
-	listData.Text = L"타이틀";
+	listData.Text = L"Title";
 	list.push_back(listData);
 	action.CustomFunction = bind(&SC_Editor::ChangeScene, this, GameScene::GAME);
 	listData.Action = action;
-	listData.Text = L"게임";
+	listData.Text = L"Game";
 	list.push_back(listData);
 	action.CustomFunction = bind(&SC_Editor::ChangeScene, this, GameScene::OPTION);
 	listData.Action = action;
-	listData.Text = L"옵션";
+	listData.Text = L"Option";
 	list.push_back(listData);
 	action.CustomFunction = bind(&SC_Editor::ChangeScene, this, GameScene::CG);
 	listData.Action = action;
@@ -100,20 +100,20 @@ void SC_Editor::Init()
 	list.push_back(listData);
 	action.CustomFunction = bind(&SC_Editor::ChangeScene, this, GameScene::SELECT);
 	listData.Action = action;
-	listData.Text = L"선택지";
+	listData.Text = L"Select";
 	list.push_back(listData);
 
-	sceneUI = new UI(UIType::LISTH, "Game", "Images/UI/Menu Button.png");
-	sceneUI->SetList(list);
-	sceneUI->SetPosition(240, 0, 0);
+	sceneUIObject = new UIObject(UIObjectType::LISTH, "Game", "Images/UI/Menu Button.png");
+	sceneUIObject->SetList(list);
+	sceneUIObject->SetPosition(240, 0, 0);
 }
 
 void SC_Editor::Update()
 {
 	objectLayer->Update();
-	sceneUI->Update();
+	sceneUIObject->Update();
 
-	if (INPUT->GetKeyDown(VK_LBUTTON) && IsFocus("Game") && !sceneUI->IsOver())
+	if (INPUT->GetKeyDown(VK_LBUTTON) && IsFocus("Game") && !sceneUIObject->IsOver())
 	{
 		if (!SelectEditType())
 		{
@@ -149,7 +149,7 @@ void SC_Editor::Render()
 {
 	objectLayer->Render();
 	InfoRender();
-	sceneUI->Render();
+	sceneUIObject->Render();
 }
 
 bool SC_Editor::Release()
@@ -157,12 +157,12 @@ bool SC_Editor::Release()
 	for (auto layer : sceneLayer)
 		SAFE_DELETE(layer.second);
 	for (int i = 0; i < 5; i++)
-		SAFE_DELETE(anchorUI[i]);
+		SAFE_DELETE(anchorUIObject[i]);
 	for (int i = 0; i < 2; i++)
-		SAFE_DELETE(layerUI[i]);
+		SAFE_DELETE(layerUIObject[i]);
 	SAFE_DELETE(editCircle);
-	SAFE_DELETE(colorUI);
-	SAFE_DELETE(sceneUI);
+	SAFE_DELETE(colorUIObject);
+	SAFE_DELETE(sceneUIObject);
 
 	return true;
 }
@@ -259,7 +259,7 @@ void SC_Editor::ChangeColor()
 	color.a = 1;
 
 	selectObject.object->SetColor(D3DXVECTOR4(color.r, color.g, color.b, color.a));
-	colorUI->SetUIColor(D3DXVECTOR4(color.r, color.g, color.b, color.a));
+	colorUIObject->SetUIObjectColor(D3DXVECTOR4(color.r, color.g, color.b, color.a));
 }
 
 void SC_Editor::InfoUpdate()
@@ -267,12 +267,12 @@ void SC_Editor::InfoUpdate()
 	if (!selectObject.object) return;
 
 	for (int i = 0; i < 5; i++)
-		anchorUI[i]->Update();
+		anchorUIObject[i]->Update();
 	for (int i = 0; i < 2; i++)
-		layerUI[i]->Update();
+		layerUIObject[i]->Update();
 
-	colorUI->SetUIColor(selectObject.object->GetColor());
-	colorUI->Update();
+	colorUIObject->SetUIObjectColor(selectObject.object->GetColor());
+	colorUIObject->Update();
 
 	editCircle->SetPosition(selectObject.object->GetPosition());
 
@@ -301,10 +301,6 @@ void SC_Editor::InfoUpdate()
 
 	if (INPUT->GetKeyDown(VK_RETURN))
 		editType = EditType::NONE;
-
-	for (int i = 0; i < 5; i++)
-		anchorUI[i]->GetObject2D()->SetColor(D3DXVECTOR4(1, 1, 1, 0.5));
-	anchorUI[(int)selectObject.object->GetAnchor()]->GetObject2D()->SetColor(D3DXVECTOR4(1, 1, 1, 1));
 }
 
 void SC_Editor::InfoRender()
@@ -312,12 +308,12 @@ void SC_Editor::InfoRender()
 	if (!selectObject.object) return;
 
 	for (int i = 0; i < 5; i++)
-		anchorUI[i]->Render();
+		anchorUIObject[i]->Render();
 	for (int i = 0; i < 2; i++)
-		layerUI[i]->Render();
+		layerUIObject[i]->Render();
 	if (editCircle)
 		editCircle->Render();
-	colorUI->Render();
+	colorUIObject->Render();
 }
 
 void SC_Editor::HierarchyUpdate()

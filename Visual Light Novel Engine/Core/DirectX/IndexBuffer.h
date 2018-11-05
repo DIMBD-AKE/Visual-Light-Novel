@@ -10,6 +10,7 @@ public:
 
 private:
 	ID3D11Buffer * buffer;
+	ID3D11DeviceContext * context;
 	string window;
 };
 

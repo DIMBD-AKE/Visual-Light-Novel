@@ -4,9 +4,9 @@
 struct LayerObject
 {
 	int layer;
-	Object2D * object;
+	GameObject * object;
 	LayerObject() { layer = 0; object = nullptr; }
-	LayerObject(int layer, Object2D * object)
+	LayerObject(int layer, GameObject * object)
 	{
 		this->layer = layer;
 		this->object = object;
@@ -19,18 +19,18 @@ public:
 	Layer();
 	~Layer();
 
-	void AddObject(int layer, Object2D * object);
-	void DeleteObject(Object2D * object);
+	void AddObject(int layer, GameObject * object);
+	void DeleteObject(GameObject * object);
 	void ChangeLayer(int newLayer, LayerObject * object);
 
 	LayerObject GetFront();
-	map<int, vector<Object2D*>, greater<int>> * GetLayers() { return &layers; }
+	map<int, vector<GameObject*>, greater<int>> * GetLayers() { return &layers; }
 
 	void Update();
 	void Render();
 	void Excute();
 
 private:
-	map<int, vector<Object2D*>, greater<int>> layers;
+	map<int, vector<GameObject*>, greater<int>> layers;
 };
 

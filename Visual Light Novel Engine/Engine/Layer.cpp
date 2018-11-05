@@ -15,12 +15,12 @@ Layer::~Layer()
 			SAFE_DELETE(object);
 }
 
-void Layer::AddObject(int layer, Object2D * object)
+void Layer::AddObject(int layer, GameObject * object)
 {
 	layers[layer].push_back(object);
 }
 
-void Layer::DeleteObject(Object2D * object)
+void Layer::DeleteObject(GameObject * object)
 {
 	for (auto& layer : layers)
 	{

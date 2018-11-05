@@ -1,13 +1,14 @@
 #pragma once
 #include "../../Core/Components/GameObject.h"
 #include "../../Core/Components/Sequence.h"
-#include "../json.hpp"
+#include "../../Core/json.hpp"
 
 #define THISPATH(layer, objIndex, bpIndex) data["LAYER"][to_string(layer)]["OBJECT"][objIndex]["BLUEPRINT"]["LIST"][bpIndex]
 
 using namespace nlohmann;
 
 class Blueprint;
+class Object2D;
 
 enum class BlueprintType
 {
@@ -31,7 +32,8 @@ enum class BlueprintSubType
 enum class BlueprintObjectType
 {
 	IMAGE,
-	UI
+	UIObject,
+	ELEMENT
 };
 
 struct BlueprintObject

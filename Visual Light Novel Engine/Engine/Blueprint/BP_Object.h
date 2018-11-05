@@ -5,7 +5,7 @@ class BP_Object : public Blueprint
 {
 public:
 	BP_Object();
-	BP_Object(Object2D * object);
+	BP_Object(GameObject * object);
 	virtual ~BP_Object();
 
 	virtual void Load(json& data);
@@ -15,11 +15,11 @@ public:
 	BlueprintObject GetObjectData() { return objectData; }
 	void Preview();
 
-	void SetOrigObject(Object2D * orig) { origObject = orig; }
-	Object2D * GetOrigObject() { return origObject; }
+	void SetOrigObject(GameObject * orig) { origObject = orig; }
+	GameObject * GetOrigObject() { return origObject; }
 
 private:
 	BlueprintObject objectData;
-	Object2D * origObject;
+	GameObject * origObject;
 };
 

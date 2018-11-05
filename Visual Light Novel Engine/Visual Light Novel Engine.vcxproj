@@ -153,6 +153,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Core\dirent.h" />
+    <ClInclude Include="Core\json.hpp" />
+    <ClInclude Include="Engine\EngineIO.h" />
     <ClInclude Include="Engine\Blueprint\BP_Function.h" />
     <ClInclude Include="Engine\Blueprint\BP_Float.h" />
     <ClInclude Include="Core\DirectX\ConstantBuffer.h" />
@@ -169,14 +172,15 @@
     <ClInclude Include="Core\System\Input.h" />
     <ClInclude Include="Core\System\Resources.h" />
     <ClInclude Include="Core\System\Scene.h" />
-    <ClInclude Include="Core\Resource\Object2D.h" />
+    <ClInclude Include="Engine\Object\Object.h" />
+    <ClInclude Include="Engine\Object\Object2D.h" />
     <ClInclude Include="Core\System\Profiler.h" />
     <ClInclude Include="Core\System\DirectWrite.h" />
     <ClInclude Include="Engine\dirent.h" />
     <ClInclude Include="Engine\json.hpp" />
     <ClInclude Include="Engine\Library\Dialogue.h" />
     <ClInclude Include="Engine\Layer.h" />
-    <ClInclude Include="Engine\Element.h" />
+    <ClInclude Include="Engine\Object\ElementObject.h" />
     <ClInclude Include="Engine\Library\Log.h" />
     <ClInclude Include="Core\Components\GameObject.h" />
     <ClInclude Include="Core\Components\Interpolation.h" />
@@ -184,11 +188,10 @@
     <ClInclude Include="Core\DirectX\IndexBuffer.h" />
     <ClInclude Include="Scenes\Main.h" />
     <ClInclude Include="Core\Resource\Shader.h" />
+    <ClInclude Include="Scenes\SC_Editor.h" />
     <ClInclude Include="Scenes\SC_Menu.h" />
     <ClInclude Include="Scenes\SC_Preview.h" />
-    <ClInclude Include="Scenes\SC_Element.h" />
     <ClInclude Include="Scenes\SC_Tool.h" />
-    <ClInclude Include="Scenes\SC_Editor.h" />
     <ClInclude Include="Core\Components\Sequence.h" />
     <ClInclude Include="Scenes\SC_Blueprint.h" />
     <ClInclude Include="stdafx.h" />
@@ -196,11 +199,13 @@
     <ClInclude Include="Core\Resource\Texture2D.h" />
     <ClInclude Include="Engine\Library\TreeSelect.h" />
     <ClInclude Include="Engine\Typewriter.h" />
-    <ClInclude Include="Engine\UI.h" />
+    <ClInclude Include="Engine\Object\UIObject.h" />
     <ClInclude Include="Core\DirectX\VertexBuffer.h" />
     <ClInclude Include="Core\Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Object\ElementObject.cpp" />
+    <ClCompile Include="Engine\EngineIO.cpp" />
     <ClCompile Include="Engine\Blueprint\BP_Function.cpp" />
     <ClCompile Include="Engine\Blueprint\BP_Float.cpp" />
     <ClCompile Include="Core\DirectX\ConstantBuffer.cpp" />
@@ -215,7 +220,7 @@
     <ClCompile Include="Core\System\Resources.cpp" />
     <ClCompile Include="Core\System\Scene.cpp" />
     <ClCompile Include="Core\Resource\Texture2D.cpp" />
-    <ClCompile Include="Core\Resource\Object2D.cpp" />
+    <ClCompile Include="Engine\Object\Object2D.cpp" />
     <ClCompile Include="Core\System\Profiler.cpp" />
     <ClCompile Include="Core\System\DirectWrite.cpp" />
     <ClCompile Include="Engine\Library\Dialogue.cpp" />
@@ -229,12 +234,11 @@
     <ClCompile Include="Core\Resource\Shader.cpp" />
     <ClCompile Include="Engine\Library\TreeSelect.cpp" />
     <ClCompile Include="Engine\Typewriter.cpp" />
-    <ClCompile Include="Engine\UI.cpp" />
+    <ClCompile Include="Engine\Object\UIObject.cpp" />
+    <ClCompile Include="Scenes\SC_Editor.cpp" />
     <ClCompile Include="Scenes\SC_Menu.cpp" />
     <ClCompile Include="Scenes\SC_Preview.cpp" />
-    <ClCompile Include="Scenes\SC_Element.cpp" />
     <ClCompile Include="Scenes\SC_Tool.cpp" />
-    <ClCompile Include="Scenes\SC_Editor.cpp" />
     <ClCompile Include="Core\Components\Sequence.cpp" />
     <ClCompile Include="Core\DirectX\VertexBuffer.cpp" />
     <ClCompile Include="Scenes\SC_Blueprint.cpp" />

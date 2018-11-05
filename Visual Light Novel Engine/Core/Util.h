@@ -1,5 +1,7 @@
 #pragma once
 #include <commdlg.h>
+#include <locale>
+#include <codecvt>
 
 namespace Math
 {
@@ -50,41 +52,9 @@ namespace Util
 		return v;
 	}
 
-	enum class FileType
+	static wstring S2W(string s)
 	{
-		IMAGE
-	};
-
-	static string OpenFile(FileType type)
-	{
-		char szFile[256];
-		szFile[0] = '\0';
-
-		OPENFILENAME ofn;
-		ZeroMemory(&ofn, sizeof(OPENFILENAME));
-
-		ofn.lStructSize = sizeof(OPENFILENAME);
-		ofn.hwndOwner = nullptr;
-		if (type == FileType::IMAGE)
-			ofn.lpstrFilter = "Image (*.png, *.jpg)\0*.png;*.jpg";
-		ofn.lpstrFile = szFile;
-		ofn.lpstrFile[0] = '\0';
-		ofn.nMaxFile = sizeof(szFile);
-		ofn.lpstrInitialDir = ".\\";
-
-		char curPath[256];
-		GetCurrentDirectory(256, curPath);
-		HRESULT hr = GetOpenFileName(&ofn);
-		assert(SUCCEEDED(hr));
-
-		if (szFile[0] != '\0')
-		{
-			SetCurrentDirectory(curPath);
-			string path(szFile);
-			path = path.substr(strlen(curPath) + 1, path.size());
-			return path;
-		}
-
-		return "";
+		wstring_convert<codecvt_utf8_utf16<wchar_t>> conv;
+		return conv.from_bytes(s);
 	}
 }

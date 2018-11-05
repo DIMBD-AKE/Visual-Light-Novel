@@ -77,9 +77,6 @@
       <DependentUpon>Background.xaml</DependentUpon>
     </Compile>
     <Compile Include="IElement.cs" />
-    <Compile Include="CharacterDialogue.xaml.cs">
-      <DependentUpon>CharacterDialogue.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Stuff.xaml.cs">
       <DependentUpon>Stuff.xaml</DependentUpon>
     </Compile>
@@ -90,10 +87,6 @@
     <Page Include="Character.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CharacterDialogue.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="InputDialogue.xaml">
       <SubType>Designer</SubType>

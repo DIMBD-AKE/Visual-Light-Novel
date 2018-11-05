@@ -1,0 +1,13 @@
+{
+  "TYPE": "BACKGROUND",
+  "STATE": [
+    {
+      "NAME": "침실",
+      "PATH": "Images\\bg\\bedroom.png"
+    },
+    {
+      "NAME": "클럽",
+      "PATH": "Images\\bg\\club.png"
+    }
+  ]
+}

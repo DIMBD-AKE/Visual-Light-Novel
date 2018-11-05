@@ -1,7 +1,7 @@
 #pragma once
 #include "Blueprint.h"
 
-class UI;
+class UIObject;
 
 class BP_Sequence : public Blueprint
 {

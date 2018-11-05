@@ -2,7 +2,7 @@
 #include "BP_Sequence.h"
 #include "BP_Object.h"
 #include "BP_Float.h"
-#include "../UI.h"
+#include "../Object/Object.h"
 #include "../../Core/Components/Sequence.h"
 #include "../../Core/Components/Interpolation.h"
 #include "../../Core/Util.h"
@@ -98,6 +98,7 @@ void BP_Sequence::Execute(void * data)
 void BP_Sequence::SetSubType(BlueprintSubType type, int dataSize)
 {
 	Blueprint::SetSubType(type, dataSize);
+	if (dataSize == 0) return;
 	subData[0].Type = BlueprintType::FLOAT;
 	subData[1].Type = BlueprintType::FLOAT;
 	for (int i = 2; i < dataSize; i++)

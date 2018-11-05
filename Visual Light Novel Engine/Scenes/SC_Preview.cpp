@@ -1,6 +1,5 @@
 #include "../stdafx.h"
 #include "SC_Preview.h"
-#include "../Engine/UI.h"
 #include "../Engine/Layer.h"
 
 

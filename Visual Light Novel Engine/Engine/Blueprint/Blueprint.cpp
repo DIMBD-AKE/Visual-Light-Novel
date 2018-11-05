@@ -2,6 +2,7 @@
 #include "../../Scenes/SC_Editor.h"
 #include "../../Scenes/SC_Blueprint.h"
 #include "../../Core/Util.h"
+#include "../Object/Object.h"
 #include "Blueprint.h"
 #include "BP_Sequence.h"
 #include "BP_Object.h"
