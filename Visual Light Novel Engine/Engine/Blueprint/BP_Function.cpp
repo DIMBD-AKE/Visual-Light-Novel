@@ -23,7 +23,13 @@ void BP_Function::Load(json & data)
 void BP_Function::Save(json & data, int layer, int objIndex, int bpIndex)
 {
 	Blueprint::Save(data, layer, objIndex, bpIndex);
-	THISPATH(layer, objIndex, bpIndex)["DATA"]["VALUE"]["NAME"] = name;
+	THISPATHO(layer, objIndex, bpIndex)["DATA"]["VALUE"]["NAME"] = name;
+}
+
+void BP_Function::Save(json & data, int bpIndex)
+{
+	Blueprint::Save(data, bpIndex);
+	THISPATHE(bpIndex)["DATA"]["VALUE"]["NAME"] = name;
 }
 
 void BP_Function::SubUpdate()

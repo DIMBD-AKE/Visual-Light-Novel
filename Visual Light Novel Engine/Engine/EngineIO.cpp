@@ -29,6 +29,7 @@ void EngineIO::ProjectSave()
 	CreateDirectory("Project", NULL);
 	CreateDirectory("Project/Scenes", NULL);
 	CreateDirectory("Project/Elements", NULL);
+	CreateDirectory("Project/Objects", NULL);
 	for (auto scene : sceneLayer)
 	{
 		string sceneName;
@@ -47,6 +48,8 @@ void EngineIO::ProjectSave()
 			{
 				if (dynamic_cast<Object2D*>(layer.second[i]))
 					dynamic_cast<Object2D*>(layer.second[i])->Save(data, layer.first, i);
+				if (dynamic_cast<ElementObject*>(layer.second[i]))
+					dynamic_cast<ElementObject*>(layer.second[i])->Save();
 			}
 		}
 
@@ -135,58 +138,7 @@ void EngineIO::LoadScene(string path, OUT map<GameScene, Layer*>& sceneLayer)
 						if (object.find("BLUEPRINT") != object.end())
 						{
 							BlueprintList * bpList = obj->GetBlueprint();
-							string bpOffset = object["BLUEPRINT"].value("OFFSET", "");
-							bpList->SetOffset(Util::StringToVector3(bpOffset));
-							bpList->Clear();
-
-							vector<BlueprintLinkData> linkData;
-							for (auto node : object["BLUEPRINT"]["LIST"])
-							{
-								string _bpPos = node["DATA"].value("POSITION", "");
-
-								BlueprintType bpType = BPFunction::StringToType(node["DATA"].value("TYPE", ""));
-								BlueprintSubType bpSubType = BPFunction::StringToSubType(node["DATA"].value("SUBTYPE", ""));
-
-								BlueprintLinkData data;
-								{
-									if (node["DATA"].find("SUBDATA") != node["DATA"].end())
-										for (auto subdata : node["DATA"]["SUBDATA"])
-											data.subdata.push_back(subdata);
-									data.data = node["DATA"].value("ID", 0);
-									data.prev = node.value("PREV", 0);
-									data.next = node.value("NEXT", 0);
-								}
-
-								Blueprint * bpCreate;
-								if (bpType == BlueprintType::OBJECT)
-								{
-									bpCreate = new BP_Object();
-									bpCreate->Load(node);
-									static_cast<BP_Object*>(bpCreate)->SetOrigObject(obj);
-									bpList->Add(bpCreate);
-								}
-								else if (bpType == BlueprintType::FLOAT)
-								{
-									bpCreate = new BP_Float();
-									bpCreate->Load(node);
-									bpList->Add(bpCreate);
-								}
-								else if (bpType == BlueprintType::FUNCTION)
-								{
-									bpCreate = new BP_Function();
-									bpCreate->Load(node);
-									bpList->Add(bpCreate);
-								}
-								else
-									bpCreate = bpList->Add(bpType);
-
-								bpCreate->SetID(data.data);
-								bpCreate->GetObject2D()->SetPosition(Util::StringToVector3(_bpPos));
-								bpCreate->SetSubType(bpSubType, data.subdata.size());
-
-								linkData.push_back(data);
-							}
-							bpList->Link(linkData);
+							LoadBlueprint(object["BLUEPRINT"], bpList, obj);
 						}
 
 						sceneLayer[scene]->AddObject(layerIndex, obj);
@@ -264,6 +216,62 @@ void EngineIO::LoadElement(string path, OUT IElement ** element)
 		*element = bg;
 		return;
 	}
+}
+
+void EngineIO::LoadBlueprint(json & data, BlueprintList * bpList, GameObject * orig)
+{
+	string bpOffset = data.value("OFFSET", "");
+	bpList->SetOffset(Util::StringToVector3(bpOffset));
+	bpList->Clear();
+
+	vector<BlueprintLinkData> linkData;
+	for (auto node : data["LIST"])
+	{
+		string _bpPos = node["DATA"].value("POSITION", "");
+
+		BlueprintType bpType = BPFunction::StringToType(node["DATA"].value("TYPE", ""));
+		BlueprintSubType bpSubType = BPFunction::StringToSubType(node["DATA"].value("SUBTYPE", ""));
+
+		BlueprintLinkData data;
+		{
+			if (node["DATA"].find("SUBDATA") != node["DATA"].end())
+				for (auto subdata : node["DATA"]["SUBDATA"])
+					data.subdata.push_back(subdata);
+			data.data = node["DATA"].value("ID", 0);
+			data.prev = node.value("PREV", 0);
+			data.next = node.value("NEXT", 0);
+		}
+
+		Blueprint * bpCreate;
+		if (bpType == BlueprintType::OBJECT)
+		{
+			bpCreate = new BP_Object();
+			bpCreate->Load(node);
+			static_cast<BP_Object*>(bpCreate)->SetOrigObject(orig);
+			bpList->Add(bpCreate);
+		}
+		else if (bpType == BlueprintType::FLOAT)
+		{
+			bpCreate = new BP_Float();
+			bpCreate->Load(node);
+			bpList->Add(bpCreate);
+		}
+		else if (bpType == BlueprintType::FUNCTION)
+		{
+			bpCreate = new BP_Function();
+			bpCreate->Load(node);
+			bpList->Add(bpCreate);
+		}
+		else
+			bpCreate = bpList->Add(bpType);
+
+		bpCreate->SetID(data.data);
+		bpCreate->GetObject2D()->SetPosition(Util::StringToVector3(_bpPos));
+		bpCreate->SetSubType(bpSubType, data.subdata.size());
+
+		linkData.push_back(data);
+	}
+	bpList->Link(linkData);
 }
 
 string EngineIO::OpenFile(FileType type)

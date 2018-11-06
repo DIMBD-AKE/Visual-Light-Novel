@@ -1,5 +1,8 @@
 #pragma once
 #include "../../Core/Components/GameObject.h"
+#include "../../Core/json.hpp"
+
+using namespace nlohmann;
 
 enum class ElementType
 {
@@ -73,6 +76,9 @@ public:
 	IElement * GetElement() { return element; }
 
 	virtual bool IsOver() override;
+
+	void Save();
+	void Load(json& data);
 
 private:
 	multimap<wstring, Texture2D*> textures;

@@ -28,7 +28,7 @@ public:
 
 	void Update();
 	void Render();
-	void Excute();
+	void Start();
 
 private:
 	map<int, vector<GameObject*>, greater<int>> layers;

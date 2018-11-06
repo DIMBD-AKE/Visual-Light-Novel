@@ -81,7 +81,7 @@ void Object2D::ChangeShader(string shaderPath)
 
 void Object2D::Save(json & data, int layer, int index)
 {
-#define THISPATH data["LAYER"][to_string(layer)]["OBJECT"][index]
+#define THISPATHO data["LAYER"][to_string(layer)]["OBJECT"][index]
 
 	string anchorText;
 	if (anchor == VertexAnchor::LEFT_TOP) anchorText = "LT";
@@ -91,13 +91,13 @@ void Object2D::Save(json & data, int layer, int index)
 	if (anchor == VertexAnchor::CENTER) anchorText = "C";
 
 	// Shader, Texture, Transform
-	THISPATH["TEXTURE"] = texturePath;
-	THISPATH["SHADER"] = "Shaders/Texture2D.hlsl";
-	THISPATH["ANCHOR"] = anchorText;
-	THISPATH["POSITION"] = Util::VectorToString(position);
-	THISPATH["ROTATION"] = Util::VectorToString(rotation);
-	THISPATH["SCALE"] = Util::VectorToString(scale);
-	THISPATH["COLOR"] = Util::VectorToString(color);
+	THISPATHO["TEXTURE"] = texturePath;
+	THISPATHO["SHADER"] = "Shaders/Texture2D.hlsl";
+	THISPATHO["ANCHOR"] = anchorText;
+	THISPATHO["POSITION"] = Util::VectorToString(position);
+	THISPATHO["ROTATION"] = Util::VectorToString(rotation);
+	THISPATHO["SCALE"] = Util::VectorToString(scale);
+	THISPATHO["COLOR"] = Util::VectorToString(color);
 
 	// Blueprint
 	bpList->Save(data, layer, index);

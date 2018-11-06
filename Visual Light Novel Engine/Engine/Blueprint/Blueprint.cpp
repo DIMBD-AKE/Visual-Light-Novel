@@ -126,8 +126,16 @@ void BlueprintList::Update()
 		if (INPUT->GetKeyDown(i + 48))
 			inputData += to_string(i);
 	}
+	for (int i = 'A'; i <= 'Z'; i++)
+	{
+		if (INPUT->GetKeyDown(i))
+			inputData += i;
+	}
 	if (INPUT->GetKeyDown(VK_OEM_PERIOD))
 		inputData += ".";
+
+	if (INPUT->GetKeyDown(VK_SPACE))
+		inputData += "_";
 
 	Link();
 	SetData();
@@ -165,16 +173,36 @@ void BlueprintList::Save(json &data, int layer, int objIndex)
 	{
 		auto node = nodeList[i];
 		
-		THISPATH(layer, objIndex, i)["PREV"] = node->prev ? node->prev->data->GetID() : 0;
-		THISPATH(layer, objIndex, i)["NEXT"] = node->next ? node->next->data->GetID() : 0;
+		THISPATHO(layer, objIndex, i)["PREV"] = node->prev ? node->prev->data->GetID() : 0;
+		THISPATHO(layer, objIndex, i)["NEXT"] = node->next ? node->next->data->GetID() : 0;
 
 		for (int j = 0; j < node->data->GetSubData().size(); j++)
 		{
 			auto bp = static_cast<Blueprint*>(node->data->GetSubData()[j].Data);
-			THISPATH(layer, objIndex, i)["DATA"]["SUBDATA"][j] = bp ? bp->GetID() : 0;
+			THISPATHO(layer, objIndex, i)["DATA"]["SUBDATA"][j] = bp ? bp->GetID() : 0;
 		}
 
 		node->data->Save(data, layer, objIndex, i);
+	}
+}
+
+void BlueprintList::Save(json & data)
+{
+	data["BLUEPRINT"]["OFFSET"] = Util::VectorToString(offset);
+	for (int i = 0; i < nodeList.size(); i++)
+	{
+		auto node = nodeList[i];
+
+		THISPATHE(i)["PREV"] = node->prev ? node->prev->data->GetID() : 0;
+		THISPATHE(i)["NEXT"] = node->next ? node->next->data->GetID() : 0;
+
+		for (int j = 0; j < node->data->GetSubData().size(); j++)
+		{
+			auto bp = static_cast<Blueprint*>(node->data->GetSubData()[j].Data);
+			THISPATHE(i)["DATA"]["SUBDATA"][j] = bp ? bp->GetID() : 0;
+		}
+
+		node->data->Save(data, i);
 	}
 }
 
@@ -309,6 +337,8 @@ void BlueprintList::SetData()
 				}
 		if (selectNode->data->GetType() == BlueprintType::FLOAT)
 			static_cast<BP_Float*>(selectNode->data)->SetValue(atof(inputData.c_str()));
+		if (selectNode->data->GetType() == BlueprintType::FUNCTION)
+			static_cast<BP_Function*>(selectNode->data)->SetName(inputData.substr(1, inputData.size()));
 	}
 	else
 		*dataIndex = -1;
@@ -422,11 +452,18 @@ void Blueprint::Render()
 
 void Blueprint::Save(json & data, int layer, int objIndex, int bpIndex)
 {
-	THISPATH(layer, objIndex, bpIndex)["DATA"]["ID"] = id;
-	THISPATH(layer, objIndex, bpIndex)["DATA"]["TYPE"] = BPFunction::TypeToString(type);
-	THISPATH(layer, objIndex, bpIndex)["DATA"]["SUBTYPE"] = BPFunction::SubTypeToString(subType);
-	THISPATH(layer, objIndex, bpIndex)["DATA"]["POSITION"] = Util::VectorToString(object2D->GetPosition() - object2D->GetOffset());
+	THISPATHO(layer, objIndex, bpIndex)["DATA"]["ID"] = id;
+	THISPATHO(layer, objIndex, bpIndex)["DATA"]["TYPE"] = BPFunction::TypeToString(type);
+	THISPATHO(layer, objIndex, bpIndex)["DATA"]["SUBTYPE"] = BPFunction::SubTypeToString(subType);
+	THISPATHO(layer, objIndex, bpIndex)["DATA"]["POSITION"] = Util::VectorToString(object2D->GetPosition() - object2D->GetOffset());
+}
 
+void Blueprint::Save(json & data, int bpIndex)
+{
+	THISPATHE(bpIndex)["DATA"]["ID"] = id;
+	THISPATHE(bpIndex)["DATA"]["TYPE"] = BPFunction::TypeToString(type);
+	THISPATHE(bpIndex)["DATA"]["SUBTYPE"] = BPFunction::SubTypeToString(subType);
+	THISPATHE(bpIndex)["DATA"]["POSITION"] = Util::VectorToString(object2D->GetPosition() - object2D->GetOffset());
 }
 
 float Blueprint::GetColorAvg()

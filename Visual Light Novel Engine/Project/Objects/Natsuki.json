@@ -1,0 +1,61 @@
+{
+  "BLUEPRINT": {
+    "LIST": [
+      {
+        "DATA": {
+          "ID": 2036691291,
+          "POSITION": "494.000000, 155.000000, 0.000000",
+          "SUBTYPE": "NONE",
+          "TYPE": "OBJECT",
+          "VALUE": {
+            "COLOR": "1.000000, 1.000000, 1.000000, 1.000000",
+            "POSITION": "416.000000, 297.000000, 0.000000",
+            "ROTATION": "0.000000, 0.000000, 0.000000",
+            "SCALE": "0.666107, 0.666107, 0.666107"
+          }
+        },
+        "NEXT": 0,
+        "PREV": 0
+      },
+      {
+        "DATA": {
+          "ID": 2036693122,
+          "POSITION": "236.000000, 275.000000, 0.000000",
+          "SUBTYPE": "NONE",
+          "TYPE": "FUNCTION",
+          "VALUE": {
+            "NAME": "START"
+          }
+        },
+        "NEXT": 2036695039,
+        "PREV": 0
+      },
+      {
+        "DATA": {
+          "ID": 2036695039,
+          "POSITION": "549.000000, 279.000000, 0.000000",
+          "SUBTYPE": "NONE",
+          "TYPE": "SEQUENCE"
+        },
+        "NEXT": 0,
+        "PREV": 2036693122
+      },
+      {
+        "DATA": {
+          "ID": 2036704339,
+          "POSITION": "232.000000, 371.000000, 0.000000",
+          "SUBTYPE": "NONE",
+          "TYPE": "FUNCTION",
+          "VALUE": {
+            "NAME": "LEFTASD"
+          }
+        },
+        "NEXT": 0,
+        "PREV": 0
+      }
+    ],
+    "OFFSET": "0.000000, 0.000000, 0.000000"
+  },
+  "ELEMENT": "Project\\Elements\\Natsuki.json",
+  "SHADER": "Shaders/Texture2D.hlsl"
+}

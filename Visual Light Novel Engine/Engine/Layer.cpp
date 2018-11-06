@@ -89,13 +89,13 @@ void Layer::Render()
 	}
 }
 
-void Layer::Excute()
+void Layer::Start()
 {
-	/*for (auto layer : layers)
+	for (auto layer : layers)
 	{
 		for (auto object : layer.second)
 		{
-			object->GetBlueprint()->Excute();
+			object->GetBlueprint()->Excute("START");
 		}
-	}*/
+	}
 }

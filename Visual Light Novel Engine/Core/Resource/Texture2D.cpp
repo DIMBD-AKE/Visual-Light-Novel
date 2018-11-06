@@ -1,5 +1,6 @@
 #include "../../stdafx.h"
 #include "Texture2D.h"
+#include "../Util.h"
 
 
 Texture2D::Texture2D()
@@ -44,13 +45,5 @@ void Texture2D::CreateTextureFromFile(string filePath, string window)
 	texture->GetDesc(&textureDesc);
 	SAFE_RELEASE(texture);
 
-	char path[256] = "";
-	char * context = nullptr;
-	strcat(path, filePath.c_str());
-	char * tok = strtok_s(path, "//\\", &context);
-	while (tok)
-	{
-		fileName = string(tok);
-		tok = strtok_s(NULL, "//\\", &context);
-	}
+	fileName = Util::GetFileName(const_cast<char*>(filePath.c_str()));
 }

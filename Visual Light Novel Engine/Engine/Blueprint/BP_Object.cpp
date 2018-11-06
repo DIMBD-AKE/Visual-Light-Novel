@@ -40,10 +40,19 @@ void BP_Object::Load(json & data)
 void BP_Object::Save(json & data, int layer, int objIndex, int bpIndex)
 {
 	Blueprint::Save(data, layer, objIndex, bpIndex);
-	THISPATH(layer, objIndex, bpIndex)["DATA"]["VALUE"]["POSITION"] = Util::VectorToString(objectData.Position);
-	THISPATH(layer, objIndex, bpIndex)["DATA"]["VALUE"]["ROTATION"] = Util::VectorToString(objectData.Rotation);
-	THISPATH(layer, objIndex, bpIndex)["DATA"]["VALUE"]["SCALE"] = Util::VectorToString(objectData.Scale);
-	THISPATH(layer, objIndex, bpIndex)["DATA"]["VALUE"]["COLOR"] = Util::VectorToString(objectData.Color);
+	THISPATHO(layer, objIndex, bpIndex)["DATA"]["VALUE"]["POSITION"] = Util::VectorToString(objectData.Position);
+	THISPATHO(layer, objIndex, bpIndex)["DATA"]["VALUE"]["ROTATION"] = Util::VectorToString(objectData.Rotation);
+	THISPATHO(layer, objIndex, bpIndex)["DATA"]["VALUE"]["SCALE"] = Util::VectorToString(objectData.Scale);
+	THISPATHO(layer, objIndex, bpIndex)["DATA"]["VALUE"]["COLOR"] = Util::VectorToString(objectData.Color);
+}
+
+void BP_Object::Save(json & data, int bpIndex)
+{
+	Blueprint::Save(data, bpIndex);
+	THISPATHE(bpIndex)["DATA"]["VALUE"]["POSITION"] = Util::VectorToString(objectData.Position);
+	THISPATHE(bpIndex)["DATA"]["VALUE"]["ROTATION"] = Util::VectorToString(objectData.Rotation);
+	THISPATHE(bpIndex)["DATA"]["VALUE"]["SCALE"] = Util::VectorToString(objectData.Scale);
+	THISPATHE(bpIndex)["DATA"]["VALUE"]["COLOR"] = Util::VectorToString(objectData.Color);
 }
 
 void BP_Object::SubUpdate()

@@ -57,4 +57,17 @@ namespace Util
 		wstring_convert<codecvt_utf8_utf16<wchar_t>> conv;
 		return conv.from_bytes(s);
 	}
+
+	static string GetFileName(char * path)
+	{
+		string fileName;
+		char * context = nullptr;
+		char * tok = strtok_s(path, "//\\", &context);
+		while (tok)
+		{
+			fileName = string(tok);
+			tok = strtok_s(NULL, "//\\", &context);
+		}
+		return fileName;
+	}
 }

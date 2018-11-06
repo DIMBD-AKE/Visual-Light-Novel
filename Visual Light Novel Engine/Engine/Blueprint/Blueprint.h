@@ -3,7 +3,8 @@
 #include "../../Core/Components/Sequence.h"
 #include "../../Core/json.hpp"
 
-#define THISPATH(layer, objIndex, bpIndex) data["LAYER"][to_string(layer)]["OBJECT"][objIndex]["BLUEPRINT"]["LIST"][bpIndex]
+#define THISPATHO(layer, objIndex, bpIndex) data["LAYER"][to_string(layer)]["OBJECT"][objIndex]["BLUEPRINT"]["LIST"][bpIndex]
+#define THISPATHE(bpIndex) data["BLUEPRINT"]["LIST"][bpIndex]
 
 using namespace nlohmann;
 
@@ -119,7 +120,8 @@ public:
 	void Render();
 
 	virtual void Load(json& data) {};
-	virtual void Save(json &data, int layer, int objIndex, int bpIndex);
+	virtual void Save(json& data, int layer, int objIndex, int bpIndex);
+	virtual void Save(json& data, int bpIndex);
 
 	void SetID(UINT id) { this->id = id; }
 	UINT GetID() { return id; }
@@ -161,6 +163,7 @@ public:
 	void Update();
 	void Render();
 	void Save(json &data, int layer, int objIndex);
+	void Save(json &data);
 	void Clear();
 
 	BlueprintObjectType GetType() { return type; }

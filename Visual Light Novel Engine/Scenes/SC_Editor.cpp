@@ -138,9 +138,6 @@ void SC_Editor::Update()
 		selectObject.object = nullptr;
 	}
 
-	if (INPUT->GetKeyDown('P'))
-		objectLayer->Excute();
-
 	InfoUpdate();
 	HierarchyUpdate();
 }
@@ -379,6 +376,7 @@ void SC_Editor::ChangeScene(GameScene scene)
 		sceneLayer[scene] = new Layer();
 
 	objectLayer = sceneLayer[scene];
+	objectLayer->Start();
 	if (selectObject.object)
 	{
 		selectObject.object->ChangeShader("Shaders/Texture2D.hlsl");

@@ -1,6 +1,10 @@
 #include "../../stdafx.h"
 #include "ElementObject.h"
 #include "../EngineIO.h"
+#include <fstream>
+#include <iomanip>
+#include "../../Core/Util.h"
+#include "../Blueprint/Blueprint.h"
 
 
 ElementObject::ElementObject(string window, string elementPath, string shaderPath)
@@ -82,4 +86,22 @@ bool ElementObject::IsOver()
 		return true;
 
 	return false;
+}
+
+void ElementObject::Save()
+{
+	json data;
+	data["ELEMENT"] = elementPath;
+	data["SHADER"] = "Shaders/Texture2D.hlsl";
+
+	bpList->Save(data);
+
+	string fileName = Util::GetFileName(const_cast<char*>(elementPath.c_str()));
+
+	ofstream stream("Project/Objects/" + fileName);
+	stream << setw(2) << data << endl;
+}
+
+void ElementObject::Load(json & data)
+{
 }
