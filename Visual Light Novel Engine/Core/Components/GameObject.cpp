@@ -5,6 +5,7 @@
 GameObject::GameObject()
 	: isDrag(false)
 	, bpList(nullptr)
+	, context(nullptr)
 	, indexBuffer(nullptr)
 	, vertexBuffer(nullptr)
 	, color(1, 1, 1, 1)

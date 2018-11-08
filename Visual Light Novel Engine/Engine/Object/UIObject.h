@@ -1,11 +1,15 @@
 #pragma once
 #include "../../Core/Components/GameObject.h"
+#include "../../Core/json.hpp"
+
+using namespace nlohmann;
 
 enum class UIObjectActionType
 {
 	NONE,
 	CHANGE_SCENE,
-	CUSTOM_FUNCTION
+	CUSTOM_FUNCTION,
+	BLUEPRINT
 };
 
 enum class UIObjectType
@@ -46,6 +50,8 @@ public:
 	virtual void Render() override;
 	void Render(int maxList);
 
+	virtual void ChangeShader(string shaderPath) override;
+
 	void SetUIObjectColor(D3DXVECTOR4 color) { UIObjectColor = color; }
 	D3DXVECTOR4 GetUIObjectColor() { return UIObjectColor; }
 
@@ -54,6 +60,11 @@ public:
 	virtual bool IsOver() override;
 	virtual Texture2D * GetTexture2D() override;
 
+	virtual void SetAnchor(VertexAnchor anchor) override;
+
+	void Save(json &data, int index);
+	void Load(json& data);
+
 private:
 	void Detect(int actionIndex);
 	void Action(UIObjectAction data);
@@ -61,7 +72,6 @@ private:
 private:
 	bool isOver;
 	UIObjectType type;
-	string window;
 	string texturePath[3];
 	D3DXVECTOR4 UIObjectColor;
 	UIObjectAction actionData;

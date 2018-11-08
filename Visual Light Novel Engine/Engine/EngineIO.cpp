@@ -11,6 +11,7 @@
 #include "Blueprint/BP_Object.h"
 #include "Blueprint/BP_Float.h"
 #include "Blueprint/BP_Function.h"
+#include "Blueprint/BP_UI.h"
 #include "../Core/Util.h"
 
 
@@ -50,6 +51,8 @@ void EngineIO::ProjectSave()
 					dynamic_cast<Object2D*>(layer.second[i])->Save(data, layer.first, i);
 				if (dynamic_cast<ElementObject*>(layer.second[i]))
 					dynamic_cast<ElementObject*>(layer.second[i])->Save();
+				if (dynamic_cast<UIObject*>(layer.second[i]))
+					dynamic_cast<UIObject*>(layer.second[i])->Save(data, i);
 			}
 		}
 
@@ -145,6 +148,28 @@ void EngineIO::LoadScene(string path, OUT map<GameScene, Layer*>& sceneLayer)
 					}
 				}
 			}
+		}
+	}
+
+	if (data.find("UI") != data.end())
+	{
+		for (auto ui : data["UI"])
+		{
+			string texDefault = ui.value("TEXTURE_DEFAULT", "");
+			string texOver = ui.value("TEXTURE_OVER", "");
+			string texPress = ui.value("TEXTURE_PRESS", "");
+
+			UIObject * uiObject = new UIObject(UIObjectType::SINGLE, "Game", texDefault, texOver, texPress);
+			uiObject->CreateBlueprint(BlueprintObjectType::UIObject);
+			uiObject->Load(ui);
+
+			if (ui.find("BLUEPRINT") != ui.end())
+			{
+				BlueprintList * bpList = uiObject->GetBlueprint();
+				LoadBlueprint(ui["BLUEPRINT"], bpList, uiObject);
+			}
+
+			sceneLayer[scene]->AddObject(-10, uiObject);
 		}
 	}
 }
@@ -262,6 +287,12 @@ void EngineIO::LoadBlueprint(json & data, BlueprintList * bpList, GameObject * o
 			bpCreate->Load(node);
 			bpList->Add(bpCreate);
 		}
+		else if (bpType == BlueprintType::UI)
+		{
+			bpCreate = new BP_UI();
+			bpCreate->Load(node);
+			bpList->Add(bpCreate);
+		}
 		else
 			bpCreate = bpList->Add(bpType);
 
@@ -274,7 +305,7 @@ void EngineIO::LoadBlueprint(json & data, BlueprintList * bpList, GameObject * o
 	bpList->Link(linkData);
 }
 
-string EngineIO::OpenFile(FileType type)
+string EngineIO::OpenFile(FileType type, string title)
 {
 	char szFile[256];
 	szFile[0] = '\0';
@@ -292,6 +323,7 @@ string EngineIO::OpenFile(FileType type)
 	ofn.lpstrFile[0] = '\0';
 	ofn.nMaxFile = sizeof(szFile);
 	ofn.lpstrInitialDir = ".\\";
+	ofn.lpstrTitle = title.c_str();
 
 	char curPath[256];
 	GetCurrentDirectory(256, curPath);

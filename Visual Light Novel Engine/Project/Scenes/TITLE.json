@@ -5,119 +5,97 @@
         {
           "ANCHOR": "C",
           "BLUEPRINT": {
-            "LIST": [
-              {
-                "DATA": {
-                  "ID": 2051903367,
-                  "POSITION": "335.000000, 328.000000, 0.000000",
-                  "SUBTYPE": "NONE",
-                  "TYPE": "FUNCTION",
-                  "VALUE": {
-                    "NAME": "START"
-                  }
-                },
-                "NEXT": 2051907510,
-                "PREV": 0
-              },
-              {
-                "DATA": {
-                  "ID": 2051907510,
-                  "POSITION": "553.000000, 325.000000, 0.000000",
-                  "SUBDATA": [
-                    2051951805,
-                    2051953726,
-                    2051924091,
-                    2051935750
-                  ],
-                  "SUBTYPE": "SEQUENCE_QUEUE_EASEOUT",
-                  "TYPE": "SEQUENCE"
-                },
-                "NEXT": 0,
-                "PREV": 2051903367
-              },
-              {
-                "DATA": {
-                  "ID": 2051924091,
-                  "POSITION": "526.000000, 128.000000, 0.000000",
-                  "SUBTYPE": "NONE",
-                  "TYPE": "OBJECT",
-                  "VALUE": {
-                    "COLOR": "1.000000, 1.000000, 1.000000, 1.000000",
-                    "POSITION": "456.000000, 200.000000, 0.000000",
-                    "ROTATION": "0.000000, 0.000000, 0.000000",
-                    "SCALE": "0.360214, 0.360214, 0.360214"
-                  }
-                },
-                "NEXT": 0,
-                "PREV": 0
-              },
-              {
-                "DATA": {
-                  "ID": 2051935750,
-                  "POSITION": "711.000000, 169.000000, 0.000000",
-                  "SUBTYPE": "NONE",
-                  "TYPE": "OBJECT",
-                  "VALUE": {
-                    "COLOR": "1.000000, 1.000000, 1.000000, 1.000000",
-                    "POSITION": "494.000000, 395.000000, 0.000000",
-                    "ROTATION": "0.000000, 0.000000, 0.000000",
-                    "SCALE": "0.930291, 0.930291, 0.930291"
-                  }
-                },
-                "NEXT": 0,
-                "PREV": 0
-              },
-              {
-                "DATA": {
-                  "ID": 2051951805,
-                  "POSITION": "270.000000, 199.000000, 0.000000",
-                  "SUBTYPE": "NONE",
-                  "TYPE": "FLOAT",
-                  "VALUE": {
-                    "FLOAT": "0.000000"
-                  }
-                },
-                "NEXT": 0,
-                "PREV": 0
-              },
-              {
-                "DATA": {
-                  "ID": 2051953726,
-                  "POSITION": "403.000000, 174.000000, 0.000000",
-                  "SUBTYPE": "NONE",
-                  "TYPE": "FLOAT",
-                  "VALUE": {
-                    "FLOAT": "1.000000"
-                  }
-                },
-                "NEXT": 0,
-                "PREV": 0
-              },
-              {
-                "DATA": {
-                  "ID": 2052062304,
-                  "POSITION": "470.000000, 421.000000, 0.000000",
-                  "SUBTYPE": "NONE",
-                  "TYPE": "FUNCTION",
-                  "VALUE": {
-                    "NAME": "TITLE_MOVE"
-                  }
-                },
-                "NEXT": 0,
-                "PREV": 0
-              }
-            ],
             "OFFSET": "0.000000, 0.000000, 0.000000"
           },
           "COLOR": "1.000000, 1.000000, 1.000000, 1.000000",
-          "POSITION": "494.000000, 395.000000, 0.000000",
+          "POSITION": "446.000000, 473.000000, 0.000000",
           "ROTATION": "0.000000, 0.000000, 0.000000",
-          "SCALE": "0.930291, 0.930291, 0.930291",
+          "SCALE": "0.502356, 0.502356, 0.502356",
+          "SHADER": "Shaders/Texture2D.hlsl",
+          "TEXTURE": "Images\\monika.png"
+        },
+        {
+          "ANCHOR": "C",
+          "BLUEPRINT": {
+            "OFFSET": "0.000000, 0.000000, 0.000000"
+          },
+          "COLOR": "1.000000, 1.000000, 1.000000, 1.000000",
+          "POSITION": "634.000000, 530.000000, 0.000000",
+          "ROTATION": "0.000000, 0.000000, 0.000000",
+          "SCALE": "0.886112, 0.886112, 0.886112",
           "SHADER": "Shaders/Texture2D.hlsl",
           "TEXTURE": "Images\\natsuki.png"
         }
       ]
+    },
+    "1": {
+      "OBJECT": [
+        {
+          "ANCHOR": "C",
+          "BLUEPRINT": {
+            "OFFSET": "0.000000, 0.000000, 0.000000"
+          },
+          "COLOR": "1.000000, 1.000000, 1.000000, 1.000000",
+          "POSITION": "637.000000, 357.000000, 0.000000",
+          "ROTATION": "0.000000, 0.000000, 0.000000",
+          "SCALE": "0.844828, 0.844828, 0.844828",
+          "SHADER": "Shaders/Texture2D.hlsl",
+          "TEXTURE": "Images\\yuri.png"
+        },
+        {
+          "ANCHOR": "C",
+          "BLUEPRINT": {
+            "OFFSET": "0.000000, 0.000000, 0.000000"
+          },
+          "COLOR": "1.000000, 1.000000, 1.000000, 1.000000",
+          "POSITION": "794.000000, 432.000000, 0.000000",
+          "ROTATION": "0.000000, 0.000000, 0.000000",
+          "SCALE": "0.855989, 0.855989, 0.855989",
+          "SHADER": "Shaders/Texture2D.hlsl",
+          "TEXTURE": "Images\\sayori.png"
+        }
+      ]
     }
   },
-  "SCENE": "TITLE"
+  "SCENE": "TITLE",
+  "UI": [
+    {
+      "ANCHOR": "LT",
+      "BLUEPRINT": {
+        "LIST": [
+          {
+            "DATA": {
+              "ID": 2222804271,
+              "POSITION": "451.000000, 320.000000, 0.000000",
+              "SUBTYPE": "NONE",
+              "TYPE": "FUNCTION",
+              "VALUE": {
+                "NAME": "CLICK"
+              }
+            },
+            "NEXT": 0,
+            "PREV": 0
+          },
+          {
+            "DATA": {
+              "ID": 2222804271,
+              "POSITION": "619.000000, 308.000000, 0.000000",
+              "SUBTYPE": "NONE",
+              "TYPE": "UI"
+            },
+            "NEXT": 0,
+            "PREV": 0
+          }
+        ],
+        "OFFSET": "0.000000, 0.000000, 0.000000"
+      },
+      "COLOR": "1.000000, 1.000000, 1.000000, 1.000000",
+      "POSITION": "199.000000, 204.000000, 0.000000",
+      "ROTATION": "0.000000, 0.000000, 0.000000",
+      "SCALE": "1.000000, 1.000000, 1.000000",
+      "TEXTURE_DEFAULT": "Images\\UI\\Menu Button.png",
+      "TEXTURE_OVER": "",
+      "TEXTURE_PRESS": ""
+    }
+  ]
 }

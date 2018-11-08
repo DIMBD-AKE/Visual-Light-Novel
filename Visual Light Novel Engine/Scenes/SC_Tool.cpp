@@ -4,6 +4,7 @@
 #include "../Scenes/SC_Editor.h"
 #include "../Engine/Layer.h"
 #include "../Engine/Blueprint/Blueprint.h"
+#include "../Engine/Blueprint/BP_Function.h"
 #include "../Core/Util.h"
 #include "../Engine/EngineIO.h"
 
@@ -88,8 +89,8 @@ void SC_Tool::CreateCharacter()
 	if (openPath != "")
 	{
 		ElementObject * object = new ElementObject("Game", openPath);
-		object->SetPosition(640, 360, 0);
 		object->CreateBlueprint(BlueprintObjectType::ELEMENT);
+		object->SetPosition(640, 360, 0);
 
 		if (!object->GetElement())
 		{
@@ -104,4 +105,20 @@ void SC_Tool::CreateCharacter()
 
 void SC_Tool::CreateUIObject()
 {
+	string defaultPath = EngineIO::OpenFile(FileType::IMAGE, "기본 텍스쳐");
+	string overPath = ""; 
+	string pressPath = "";
+	if (defaultPath.size() > 0)
+	{
+		overPath = EngineIO::OpenFile(FileType::IMAGE, "위에 있을 때 텍스쳐");
+		pressPath = EngineIO::OpenFile(FileType::IMAGE, "눌렸을 때 텍스쳐");
+
+		UIObject * object = new UIObject(UIObjectType::SINGLE, "Game", defaultPath, overPath, pressPath);
+		object->CreateBlueprint(BlueprintObjectType::UIObject);
+		auto * func = dynamic_cast<BP_Function*>(object->GetBlueprint()->Add(BlueprintType::FUNCTION));
+		func->SetName("CLICK");
+		object->SetPosition(640, 360, 0);
+
+		dynamic_cast<SC_Editor*>(SCENE->GetCurrentScene("Game"))->GetLayer()->AddObject(-10, object);
+	}
 }

@@ -8,6 +8,7 @@
 #include "BP_Object.h"
 #include "BP_Float.h"
 #include "BP_Function.h"
+#include "BP_UI.h"
 
 
 BlueprintList::BlueprintList(BlueprintObjectType type)
@@ -43,6 +44,7 @@ Blueprint * BlueprintList::Add(BlueprintType type)
 	if (type == BlueprintType::OBJECT) data = new BP_Object(static_cast<SC_Editor*>(SCENE->GetScene("Editor"))->GetSelectObject());
 	if (type == BlueprintType::FLOAT) data = new BP_Float();
 	if (type == BlueprintType::FUNCTION) data = new BP_Function();
+	if (type == BlueprintType::UI) data = new BP_UI();
 	data->GetObject2D()->SetPosition(640, 360, 0);
 	data->SetID(time(NULL) + timeGetTime());
 	BlueprintNode * node = new BlueprintNode();
@@ -105,6 +107,8 @@ void BlueprintList::Update()
 			WRITE->Text(L"Object", pos, "Blueprint", 20, L"³ª´®½ºÄù¾î", color);
 		if (bp->data->GetType() == BlueprintType::FLOAT)
 			WRITE->Text(L"Float", pos, "Blueprint", 20, L"³ª´®½ºÄù¾î", color);
+		if (bp->data->GetType() == BlueprintType::UI)
+			WRITE->Text(L"UI", pos, "Blueprint", 20, L"³ª´®½ºÄù¾î", color);
 		
 		bp->data->GetObject2D()->SetOffset(offset);
 
@@ -183,6 +187,26 @@ void BlueprintList::Save(json &data, int layer, int objIndex)
 		}
 
 		node->data->Save(data, layer, objIndex, i);
+	}
+}
+
+void BlueprintList::Save(json & data, int objIndex)
+{
+	data["UI"][objIndex]["BLUEPRINT"]["OFFSET"] = Util::VectorToString(offset);
+	for (int i = 0; i < nodeList.size(); i++)
+	{
+		auto node = nodeList[i];
+
+		THISPATHU(objIndex, i)["PREV"] = node->prev ? node->prev->data->GetID() : 0;
+		THISPATHU(objIndex, i)["NEXT"] = node->next ? node->next->data->GetID() : 0;
+
+		for (int j = 0; j < node->data->GetSubData().size(); j++)
+		{
+			auto bp = static_cast<Blueprint*>(node->data->GetSubData()[j].Data);
+			THISPATHU(objIndex, i)["DATA"]["SUBDATA"][j] = bp ? bp->GetID() : 0;
+		}
+
+		node->data->Save(data, objIndex, i);
 	}
 }
 
@@ -456,6 +480,14 @@ void Blueprint::Save(json & data, int layer, int objIndex, int bpIndex)
 	THISPATHO(layer, objIndex, bpIndex)["DATA"]["TYPE"] = BPFunction::TypeToString(type);
 	THISPATHO(layer, objIndex, bpIndex)["DATA"]["SUBTYPE"] = BPFunction::SubTypeToString(subType);
 	THISPATHO(layer, objIndex, bpIndex)["DATA"]["POSITION"] = Util::VectorToString(object2D->GetPosition() - object2D->GetOffset());
+}
+
+void Blueprint::Save(json & data, int objIndex, int bpIndex)
+{
+	THISPATHU(objIndex, bpIndex)["DATA"]["ID"] = id;
+	THISPATHU(objIndex, bpIndex)["DATA"]["TYPE"] = BPFunction::TypeToString(type);
+	THISPATHU(objIndex, bpIndex)["DATA"]["SUBTYPE"] = BPFunction::SubTypeToString(subType);
+	THISPATHU(objIndex, bpIndex)["DATA"]["POSITION"] = Util::VectorToString(object2D->GetPosition() - object2D->GetOffset());
 }
 
 void Blueprint::Save(json & data, int bpIndex)

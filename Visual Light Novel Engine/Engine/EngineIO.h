@@ -30,6 +30,6 @@ public:
 
 	static void LoadBlueprint(json& data, BlueprintList * bpList, GameObject * orig);
 
-	static string OpenFile(FileType type);
+	static string OpenFile(FileType type, string title = "");
 };
 

@@ -39,8 +39,8 @@ public:
 	bool IsDrag() { return isDrag; }
 
 	// Get, Set
-	void			SetAnchor(VertexAnchor anchor);
-	VertexAnchor	GetAnchor() { return anchor; }
+	virtual void			SetAnchor(VertexAnchor anchor);
+	virtual VertexAnchor	GetAnchor() { return anchor; }
 
 	D3DXVECTOR4		GetColor() { return color; }
 	void			SetColor(D3DXVECTOR4 c) { color = c; }

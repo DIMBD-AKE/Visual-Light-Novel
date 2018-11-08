@@ -26,6 +26,12 @@ void BP_Function::Save(json & data, int layer, int objIndex, int bpIndex)
 	THISPATHO(layer, objIndex, bpIndex)["DATA"]["VALUE"]["NAME"] = name;
 }
 
+void BP_Function::Save(json & data, int objIndex, int bpIndex)
+{
+	Blueprint::Save(data, objIndex, bpIndex);
+	THISPATHU(objIndex, bpIndex)["DATA"]["VALUE"]["NAME"] = name;
+}
+
 void BP_Function::Save(json & data, int bpIndex)
 {
 	Blueprint::Save(data, bpIndex);

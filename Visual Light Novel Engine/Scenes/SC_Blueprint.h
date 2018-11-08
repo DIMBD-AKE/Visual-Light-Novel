@@ -24,8 +24,11 @@ private:
 
 private:
 	UIObject * createUIObject;
+	// Sequence
 	UIObject * seqListUIObject;
 	UIObject * seqDataListUIObject;
+	// UI
+	UIObject * uiListUIObject;
 
 	int dataIndex;
 

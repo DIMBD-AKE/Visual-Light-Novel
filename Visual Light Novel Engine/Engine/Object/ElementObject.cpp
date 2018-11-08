@@ -69,6 +69,12 @@ void ElementObject::Render()
 	}
 }
 
+void ElementObject::ChangeShader(string shaderPath)
+{
+	SAFE_DELETE(shader);
+	shader = RESOURCES->GetResource<Shader>(shaderPath, window);
+}
+
 void ElementObject::SetState(wstring state)
 {
 	stateName = state;

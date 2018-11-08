@@ -43,6 +43,10 @@ void SC_Blueprint::Init()
 	listData.Text = L"Sequence";
 	listData.Action = action;
 	list.push_back(listData);
+	action.CustomFunction = bind(&SC_Blueprint::CreateBlueprint, this, BlueprintType::UI);
+	listData.Text = L"UI";
+	listData.Action = action;
+	list.push_back(listData);
 	createUIObject = new UIObject(UIObjectType::LISTH, "Blueprint", "Images/UI/Menu Button.png");
 	createUIObject->SetList(list);
 	createUIObject->SetAction(action);
@@ -105,6 +109,8 @@ void SC_Blueprint::Init()
 	seqDataListUIObject->SetList(list);
 	seqDataListUIObject->GetObject2D()->SetAnchor(VertexAnchor::RIGHT_TOP);
 	seqDataListUIObject->SetPosition(1280, 100, 0);
+
+	list.clear();
 }
 
 void SC_Blueprint::Update()

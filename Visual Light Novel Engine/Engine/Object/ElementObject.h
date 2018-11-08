@@ -72,6 +72,8 @@ public:
 	virtual void Render() override;
 	virtual Texture2D * GetTexture2D() override { return textures.begin()->second; }
 
+	virtual void ChangeShader(string shaderPath) override;
+
 	void SetState(wstring state);
 	IElement * GetElement() { return element; }
 

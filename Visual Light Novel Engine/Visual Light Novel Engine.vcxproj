@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Blueprint\BP_UI.h" />
     <ClInclude Include="Core\dirent.h" />
     <ClInclude Include="Core\json.hpp" />
     <ClInclude Include="Engine\EngineIO.h" />
@@ -204,6 +205,7 @@
     <ClInclude Include="Core\Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Blueprint\BP_UI.cpp" />
     <ClCompile Include="Engine\Object\ElementObject.cpp" />
     <ClCompile Include="Engine\EngineIO.cpp" />
     <ClCompile Include="Engine\Blueprint\BP_Function.cpp" />
@@ -244,6 +246,9 @@
     <ClCompile Include="Scenes\SC_Blueprint.cpp" />
     <ClCompile Include="Visual Light Novel Engine.cpp" />
     <ClCompile Include="Core\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

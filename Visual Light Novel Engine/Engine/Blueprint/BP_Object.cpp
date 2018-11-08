@@ -46,6 +46,15 @@ void BP_Object::Save(json & data, int layer, int objIndex, int bpIndex)
 	THISPATHO(layer, objIndex, bpIndex)["DATA"]["VALUE"]["COLOR"] = Util::VectorToString(objectData.Color);
 }
 
+void BP_Object::Save(json & data, int objIndex, int bpIndex)
+{
+	Blueprint::Save(data, objIndex, bpIndex);
+	THISPATHU(objIndex, bpIndex)["DATA"]["VALUE"]["POSITION"] = Util::VectorToString(objectData.Position);
+	THISPATHU(objIndex, bpIndex)["DATA"]["VALUE"]["ROTATION"] = Util::VectorToString(objectData.Rotation);
+	THISPATHU(objIndex, bpIndex)["DATA"]["VALUE"]["SCALE"] = Util::VectorToString(objectData.Scale);
+	THISPATHU(objIndex, bpIndex)["DATA"]["VALUE"]["COLOR"] = Util::VectorToString(objectData.Color);
+}
+
 void BP_Object::Save(json & data, int bpIndex)
 {
 	Blueprint::Save(data, bpIndex);

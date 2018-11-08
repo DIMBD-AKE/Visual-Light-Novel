@@ -4,6 +4,7 @@
 #include "../../Core/json.hpp"
 
 #define THISPATHO(layer, objIndex, bpIndex) data["LAYER"][to_string(layer)]["OBJECT"][objIndex]["BLUEPRINT"]["LIST"][bpIndex]
+#define THISPATHU(objIndex, bpIndex) data["UI"][objIndex]["BLUEPRINT"]["LIST"][bpIndex]
 #define THISPATHE(bpIndex) data["BLUEPRINT"]["LIST"][bpIndex]
 
 using namespace nlohmann;
@@ -16,7 +17,8 @@ enum class BlueprintType
 	FUNCTION,
 	OBJECT,
 	FLOAT,
-	SEQUENCE
+	SEQUENCE,
+	UI
 };
 
 enum class BlueprintSubType
@@ -75,6 +77,7 @@ namespace BPFunction
 		if (type == BlueprintType::FLOAT) typeString = "FLOAT";
 		if (type == BlueprintType::OBJECT) typeString = "OBJECT";
 		if (type == BlueprintType::SEQUENCE) typeString = "SEQUENCE";
+		if (type == BlueprintType::UI) typeString = "UI";
 		return typeString;
 	}
 	static string SubTypeToString(BlueprintSubType subType)
@@ -96,6 +99,7 @@ namespace BPFunction
 		if (s.compare("FLOAT") == 0) type = BlueprintType::FLOAT;
 		if (s.compare("OBJECT") == 0) type = BlueprintType::OBJECT;
 		if (s.compare("SEQUENCE") == 0) type = BlueprintType::SEQUENCE;
+		if (s.compare("UI") == 0) type = BlueprintType::UI;
 		return type;
 	}
 	static BlueprintSubType StringToSubType(string s)
@@ -121,6 +125,7 @@ public:
 
 	virtual void Load(json& data) {};
 	virtual void Save(json& data, int layer, int objIndex, int bpIndex);
+	virtual void Save(json& data, int objIndex, int bpIndex);
 	virtual void Save(json& data, int bpIndex);
 
 	void SetID(UINT id) { this->id = id; }
@@ -163,6 +168,7 @@ public:
 	void Update();
 	void Render();
 	void Save(json &data, int layer, int objIndex);
+	void Save(json &data, int objIndex);
 	void Save(json &data);
 	void Clear();
 

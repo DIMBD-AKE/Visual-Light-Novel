@@ -27,6 +27,12 @@ void BP_Float::Save(json & data, int layer, int objIndex, int bpIndex)
 	THISPATHO(layer, objIndex, bpIndex)["DATA"]["VALUE"]["FLOAT"] = to_string(value);
 }
 
+void BP_Float::Save(json & data, int objIndex, int bpIndex)
+{
+	Blueprint::Save(data, objIndex, bpIndex);
+	THISPATHU(objIndex, bpIndex)["DATA"]["VALUE"]["FLOAT"] = to_string(value);
+}
+
 void BP_Float::Save(json & data, int bpIndex)
 {
 	Blueprint::Save(data, bpIndex);

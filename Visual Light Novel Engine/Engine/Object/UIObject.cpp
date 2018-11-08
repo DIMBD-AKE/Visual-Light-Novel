@@ -2,6 +2,7 @@
 #include "UIObject.h"
 #include "../../Core/Util.h"
 #include "Object.h"
+#include "../Blueprint/Blueprint.h"
 
 
 UIObject::UIObject(UIObjectType type, string window, string defaultImage, string overImage, string pressImage)
@@ -45,7 +46,7 @@ void UIObject::Update()
 
 		object2D->Update();
 
-		if (!isActive || IsDrag()) return;
+		if (!isActive) return;
 
 		Detect(-1);
 	}
@@ -59,9 +60,7 @@ void UIObject::Render()
 		object2D->Render();
 
 	if (type == UIObjectType::LISTV || type == UIObjectType::LISTH)
-	{
 		Render(-1);
-	}
 }
 
 void UIObject::Render(int maxList)
@@ -98,6 +97,11 @@ void UIObject::Render(int maxList)
 
 		Detect(i);
 	}
+}
+
+void UIObject::ChangeShader(string shaderPath)
+{
+	object2D->ChangeShader(shaderPath);
 }
 
 void UIObject::SetActive(bool active)
@@ -142,6 +146,60 @@ Texture2D * UIObject::GetTexture2D()
 	return object2D->GetTexture2D();
 }
 
+void UIObject::SetAnchor(VertexAnchor anchor)
+{
+	object2D->SetAnchor(anchor);
+}
+
+void UIObject::Save(json & data, int index)
+{
+#define THISPATH data["UI"][index]
+
+	string anchorText;
+	if (object2D->GetAnchor() == VertexAnchor::LEFT_TOP) anchorText = "LT";
+	if (object2D->GetAnchor() == VertexAnchor::RIGHT_TOP) anchorText = "RT";
+	if (object2D->GetAnchor() == VertexAnchor::LEFT_BOTTOM) anchorText = "LB";
+	if (object2D->GetAnchor() == VertexAnchor::RIGHT_BOTTOM) anchorText = "RB";
+	if (object2D->GetAnchor() == VertexAnchor::CENTER) anchorText = "C";
+
+	// Shader, Texture, Transform
+	THISPATH["TEXTURE_DEFAULT"] = texturePath[0];
+	THISPATH["TEXTURE_OVER"] = texturePath[1];
+	THISPATH["TEXTURE_PRESS"] = texturePath[2];
+	THISPATH["ANCHOR"] = anchorText;
+	THISPATH["POSITION"] = Util::VectorToString(position);
+	THISPATH["ROTATION"] = Util::VectorToString(rotation);
+	THISPATH["SCALE"] = Util::VectorToString(scale);
+	THISPATH["COLOR"] = Util::VectorToString(color);
+
+	// Blueprint
+	bpList->Save(data, index);
+}
+
+void UIObject::Load(json & data)
+{
+	actionData.Type = UIObjectActionType::BLUEPRINT;
+
+	string anchor = data.value("ANCHOR", "");
+	string color = data.value("COLOR", "");
+	string pos = data.value("POSITION", "");
+	string rot = data.value("ROTATION", "");
+	string scale = data.value("SCALE", "");
+
+	VertexAnchor ac;
+	if (anchor == "C") ac = VertexAnchor::CENTER;
+	if (anchor == "LT") ac = VertexAnchor::LEFT_TOP;
+	if (anchor == "RT") ac = VertexAnchor::RIGHT_TOP;
+	if (anchor == "LB") ac = VertexAnchor::LEFT_BOTTOM;
+	if (anchor == "RB") ac = VertexAnchor::RIGHT_BOTTOM;
+	SetAnchor(ac);
+
+	position = Util::StringToVector3(pos);
+	rotation = Util::StringToVector3(rot);
+	this->scale = Util::StringToVector3(scale);
+	this->color = Util::StringToVector4(color);
+}
+
 void UIObject::Detect(int actionIndex)
 {
 	D3DXVECTOR4 color = UIObjectColor;
@@ -151,7 +209,10 @@ void UIObject::Detect(int actionIndex)
 		{
 			isOver = true;
 			if (texturePath[1] != "")
+			{
+				object2D->SetColor(color);
 				object2D->ChangeTexture(texturePath[1]);
+			}
 			else
 			{
 				color *= 0.8;
@@ -161,7 +222,10 @@ void UIObject::Detect(int actionIndex)
 		if (INPUT->GetKeyDown(VK_LBUTTON))
 		{
 			if (texturePath[2] != "")
+			{
+				object2D->SetColor(color);
 				object2D->ChangeTexture(texturePath[2]);
+			}
 			else
 			{
 				color *= 0.5;
@@ -175,7 +239,10 @@ void UIObject::Detect(int actionIndex)
 		if (INPUT->GetKeyUp(VK_LBUTTON))
 		{
 			if (texturePath[1] != "")
+			{
+				object2D->SetColor(color);
 				object2D->ChangeTexture(texturePath[1]);
+			}
 			else
 			{
 				color *= 0.8;
@@ -201,5 +268,9 @@ void UIObject::Action(UIObjectAction data)
 	if (data.Type == UIObjectActionType::CUSTOM_FUNCTION)
 	{
 		data.CustomFunction();
+	}
+	if (data.Type == UIObjectActionType::BLUEPRINT)
+	{
+		bpList->Excute("CLICK");
 	}
 }
