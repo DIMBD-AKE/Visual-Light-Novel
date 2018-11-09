@@ -113,6 +113,18 @@ void UIObject::SetActive(bool active)
 	isActive = active;
 }
 
+void UIObject::SetActive(bool active, wstring name)
+{
+	for (auto &list : listData)
+	{
+		if (list.Text.compare(name) == 0)
+		{
+			list.Active = active;
+			break;
+		}
+	}
+}
+
 bool UIObject::IsOver()
 {
 	if (type == UIObjectType::SINGLE)
@@ -203,6 +215,14 @@ void UIObject::Load(json & data)
 void UIObject::Detect(int actionIndex)
 {
 	D3DXVECTOR4 color = UIObjectColor;
+	if (actionIndex >= 0 && !listData[actionIndex].Active)
+	{
+		object2D->SetColor(D3DXVECTOR4(0.5, 0.5, 0.5, 1));
+		object2D->Render();
+		return;
+	}
+	else
+		object2D->SetColor(color);
 	if (object2D->IsOver())
 	{
 		if (!isOver)

@@ -29,7 +29,17 @@ enum class BlueprintSubType
 	SEQUENCE_QUEUE_EASEINOUT,
 	SEQUENCE_QUEUE_LINEAR,
 	SEQUENCE_QUEUE_BEZIER2,
-	SEQUENCE_QUEUE_BEZIER3
+	SEQUENCE_QUEUE_BEZIER3,
+	UI_GAME_START,
+	UI_GAME_END,
+	UI_GAME_SAVE,
+	UI_GAME_LOAD,
+	UI_SCENE_TITLE,
+	UI_SCENE_OPTION,
+	UI_SCENE_CG,
+	UI_SCENE_SELECT,
+	UI_SCENE_DIALOGUE,
+	UI_SCENE_SAVE
 };
 
 enum class BlueprintObjectType
@@ -90,6 +100,17 @@ namespace BPFunction
 		if (subType == BlueprintSubType::SEQUENCE_QUEUE_EASEINOUT) subtypeString = "SEQUENCE_QUEUE_EASEINOUT";
 		if (subType == BlueprintSubType::SEQUENCE_QUEUE_EASEOUT) subtypeString = "SEQUENCE_QUEUE_EASEOUT";
 		if (subType == BlueprintSubType::SEQUENCE_QUEUE_LINEAR) subtypeString = "SEQUENCE_QUEUE_LINEAR";
+
+		if (subType == BlueprintSubType::UI_GAME_START) subtypeString = "UI_GAME_START";
+		if (subType == BlueprintSubType::UI_GAME_END) subtypeString = "UI_GAME_END";
+		if (subType == BlueprintSubType::UI_GAME_SAVE) subtypeString = "UI_GAME_SAVE";
+		if (subType == BlueprintSubType::UI_GAME_LOAD) subtypeString = "UI_GAME_LOAD";
+		if (subType == BlueprintSubType::UI_SCENE_CG) subtypeString = "UI_SCENE_CG";
+		if (subType == BlueprintSubType::UI_SCENE_DIALOGUE) subtypeString = "UI_SCENE_DIALOGUE";
+		if (subType == BlueprintSubType::UI_SCENE_OPTION) subtypeString = "UI_SCENE_OPTION";
+		if (subType == BlueprintSubType::UI_SCENE_TITLE) subtypeString = "UI_SCENE_TITLE";
+		if (subType == BlueprintSubType::UI_SCENE_SELECT) subtypeString = "UI_SCENE_SELECT";
+		if (subType == BlueprintSubType::UI_SCENE_SAVE) subtypeString = "UI_SCENE_SAVE";
 		return subtypeString;
 	}
 	static BlueprintType StringToType(string s)
@@ -111,6 +132,17 @@ namespace BPFunction
 		if (s.compare("SEQUENCE_QUEUE_LINEAR") == 0) subType = BlueprintSubType::SEQUENCE_QUEUE_LINEAR;
 		if (s.compare("SEQUENCE_QUEUE_BEZIER2") == 0) subType = BlueprintSubType::SEQUENCE_QUEUE_BEZIER2;
 		if (s.compare("SEQUENCE_QUEUE_BEZIER3") == 0) subType = BlueprintSubType::SEQUENCE_QUEUE_BEZIER3;
+
+		if (s.compare("UI_GAME_START") == 0) subType = BlueprintSubType::UI_GAME_START;
+		if (s.compare("UI_GAME_END") == 0) subType = BlueprintSubType::UI_GAME_END;
+		if (s.compare("UI_GAME_SAVE") == 0) subType = BlueprintSubType::UI_GAME_SAVE;
+		if (s.compare("UI_GAME_LOAD") == 0) subType = BlueprintSubType::UI_GAME_LOAD;
+		if (s.compare("UI_SCENE_CG") == 0) subType = BlueprintSubType::UI_SCENE_CG;
+		if (s.compare("UI_SCENE_DIALOGUE") == 0) subType = BlueprintSubType::UI_SCENE_DIALOGUE;
+		if (s.compare("UI_SCENE_OPTION") == 0) subType = BlueprintSubType::UI_SCENE_OPTION;
+		if (s.compare("UI_SCENE_SAVE") == 0) subType = BlueprintSubType::UI_SCENE_SAVE;
+		if (s.compare("UI_SCENE_SELECT") == 0) subType = BlueprintSubType::UI_SCENE_SELECT;
+		if (s.compare("UI_SCENE_TITLE") == 0) subType = BlueprintSubType::UI_SCENE_TITLE;
 		return subType;
 	}
 }

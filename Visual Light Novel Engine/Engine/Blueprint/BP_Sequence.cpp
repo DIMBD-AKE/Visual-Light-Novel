@@ -27,7 +27,7 @@ void BP_Sequence::SubUpdate()
 	if (subType == BlueprintSubType::SEQUENCE_QUEUE_LINEAR) text = L"Linear";
 	if (subType == BlueprintSubType::SEQUENCE_QUEUE_BEZIER2) text = L"Bezier2";
 	if (subType == BlueprintSubType::SEQUENCE_QUEUE_BEZIER3) text = L"Bezier3";
-
+	WRITE->SetAlign(WriteAlign::CENTER);
 	WRITE->Text(text, D3DXVECTOR2(object2D->GetPosition()), "Blueprint", 14, L"³ª´®½ºÄù¾î", D3DXCOLOR(0.5, 0.5, 0.5, 1));
 }
 

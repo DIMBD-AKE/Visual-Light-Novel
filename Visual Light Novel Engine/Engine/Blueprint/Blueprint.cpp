@@ -264,6 +264,8 @@ void BlueprintList::Excute(string funcName)
 	{
 		if (head->data->GetType() == BlueprintType::SEQUENCE)
 			head->data->Execute(seq);
+		if (head->data->GetType() == BlueprintType::UI)
+			head->data->Execute(nullptr);
 		head = head->next;
 	}
 }

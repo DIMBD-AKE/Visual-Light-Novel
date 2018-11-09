@@ -29,6 +29,7 @@ struct UIObjectAction
 
 struct UIObjectList
 {
+	bool Active;
 	wstring Text;
 	UIObjectAction Action;
 };
@@ -56,6 +57,7 @@ public:
 	D3DXVECTOR4 GetUIObjectColor() { return UIObjectColor; }
 
 	virtual void SetActive(bool active) override;
+	void SetActive(bool active, wstring name);
 
 	virtual bool IsOver() override;
 	virtual Texture2D * GetTexture2D() override;
