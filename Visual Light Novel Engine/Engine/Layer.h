@@ -1,5 +1,8 @@
 #pragma once
 #include "../Core/Components/GameObject.h"
+#include "../Core/json.hpp"
+
+using namespace nlohmann;
 
 struct LayerObject
 {
@@ -12,6 +15,10 @@ struct LayerObject
 		this->object = object;
 	}
 };
+
+class ContentObject;
+class NameObject;
+class BackgroundObject;
 
 class Layer
 {
@@ -30,7 +37,16 @@ public:
 	void Render();
 	void Start();
 
+	void CreateContent();
+	void CreateName();
+	void CreateBackground();
+
+	void Save(json& data);
+
 private:
 	map<int, vector<GameObject*>, greater<int>> layers;
+	ContentObject * contentObject;
+	NameObject * nameObject;
+	BackgroundObject * bgObject;
 };
 

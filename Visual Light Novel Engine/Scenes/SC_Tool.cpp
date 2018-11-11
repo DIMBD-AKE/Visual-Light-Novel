@@ -35,6 +35,16 @@ void SC_Tool::Init()
 	toolUIObject[2] = new UIObject(UIObjectType::SINGLE, "Tool", "Images/UI/Tool - UI.png");
 	toolUIObject[2]->SetPosition(100, 0, 0);
 	toolUIObject[2]->SetAction(action);
+
+	action.CustomFunction = bind(&SC_Tool::CreateBackground, this);
+	toolUIObject[3] = new UIObject(UIObjectType::SINGLE, "Tool", "Images/UI/Tool - Background.png");
+	toolUIObject[3]->SetPosition(0, 50, 0);
+	toolUIObject[3]->SetAction(action);
+
+	action.CustomFunction = bind(&SC_Tool::CreateContent, this);
+	toolUIObject[4] = new UIObject(UIObjectType::SINGLE, "Tool", "Images/UI/Tool - Content.png");
+	toolUIObject[4]->SetPosition(50, 50, 0);
+	toolUIObject[4]->SetAction(action);
 }
 
 void SC_Tool::Update()
@@ -42,15 +52,24 @@ void SC_Tool::Update()
 	string name = SCENE->GetCurrentSceneName("Game");
 	if (name.compare("Preview") == 0)
 	{
-		toolUIObject[0]->SetActive(false);
-		toolUIObject[1]->SetActive(false);
-		toolUIObject[2]->SetActive(false);
+		for (int i = 0; i < TOOLCOUNT; i++)
+			toolUIObject[i]->SetActive(false);
 	}
 	if (name.compare("Editor") == 0)
 	{
 		toolUIObject[0]->SetActive(true);
 		toolUIObject[1]->SetActive(true);
 		toolUIObject[2]->SetActive(true);
+		if (static_cast<SC_Editor*>(SCENE->GetCurrentScene("Game"))->GetScene() == GameScene::GAME)
+		{
+			toolUIObject[3]->SetActive(true);
+			toolUIObject[4]->SetActive(true);
+		}
+		else
+		{
+			toolUIObject[3]->SetActive(false);
+			toolUIObject[4]->SetActive(false);
+		}
 	}
 
 	for (int i = 0; i < TOOLCOUNT; i++)
@@ -121,4 +140,14 @@ void SC_Tool::CreateUIObject()
 
 		dynamic_cast<SC_Editor*>(SCENE->GetCurrentScene("Game"))->GetLayer()->AddObject(-10, object);
 	}
+}
+
+void SC_Tool::CreateBackground()
+{
+	dynamic_cast<SC_Editor*>(SCENE->GetCurrentScene("Game"))->GetLayer()->CreateBackground();
+}
+
+void SC_Tool::CreateContent()
+{
+	dynamic_cast<SC_Editor*>(SCENE->GetCurrentScene("Game"))->GetLayer()->CreateContent();
 }

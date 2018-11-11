@@ -153,6 +153,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Object\BackgroundObject.h" />
+    <ClInclude Include="Engine\Object\DialogueObject.h" />
     <ClInclude Include="Engine\Blueprint\BP_UI.h" />
     <ClInclude Include="Core\dirent.h" />
     <ClInclude Include="Core\json.hpp" />
@@ -205,6 +207,8 @@
     <ClInclude Include="Core\Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Object\BackgroundObject.cpp" />
+    <ClCompile Include="Engine\Object\DialogueObject.cpp" />
     <ClCompile Include="Engine\Blueprint\BP_UI.cpp" />
     <ClCompile Include="Engine\Object\ElementObject.cpp" />
     <ClCompile Include="Engine\EngineIO.cpp" />

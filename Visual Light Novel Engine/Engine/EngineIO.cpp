@@ -43,18 +43,7 @@ void EngineIO::ProjectSave()
 		json data;
 		data["SCENE"] = sceneName;
 
-		for (auto layer : *scene.second->GetLayers())
-		{
-			for (int i = 0; i < layer.second.size(); i++)
-			{
-				if (dynamic_cast<Object2D*>(layer.second[i]))
-					dynamic_cast<Object2D*>(layer.second[i])->Save(data, layer.first, i);
-				if (dynamic_cast<ElementObject*>(layer.second[i]))
-					dynamic_cast<ElementObject*>(layer.second[i])->Save();
-				if (dynamic_cast<UIObject*>(layer.second[i]))
-					dynamic_cast<UIObject*>(layer.second[i])->Save(data, i);
-			}
-		}
+		scene.second->Save(data);
 
 		ofstream stream("Project/Scenes/" + sceneName + ".json");
 		stream << setw(2) << data << endl;

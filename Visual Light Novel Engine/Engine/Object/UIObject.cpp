@@ -221,7 +221,7 @@ void UIObject::Detect(int actionIndex)
 		object2D->Render();
 		return;
 	}
-	else
+	else if (actionIndex >= 0)
 		object2D->SetColor(color);
 	if (object2D->IsOver())
 	{

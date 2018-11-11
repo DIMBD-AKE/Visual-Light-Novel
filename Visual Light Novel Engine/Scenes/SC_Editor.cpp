@@ -372,6 +372,7 @@ void SC_Editor::HierarchyUpdate()
 
 void SC_Editor::ChangeScene(GameScene scene)
 {
+	currentScene = scene;
 	if (sceneLayer.find(scene) == sceneLayer.end())
 		sceneLayer[scene] = new Layer();
 

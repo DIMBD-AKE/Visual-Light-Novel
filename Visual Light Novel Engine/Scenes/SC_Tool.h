@@ -2,7 +2,7 @@
 
 class UIObject;
 
-#define TOOLCOUNT 3
+#define TOOLCOUNT 5
 
 class SC_Tool : public IScene
 {
@@ -19,6 +19,8 @@ private:
 	void CreateImage();
 	void CreateCharacter();
 	void CreateUIObject();
+	void CreateBackground();
+	void CreateContent();
 
 private:
 	UIObject * toolUIObject[TOOLCOUNT];

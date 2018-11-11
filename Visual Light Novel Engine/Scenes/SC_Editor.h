@@ -28,6 +28,7 @@ public:
 	GameObject * GetSelectObject() { return selectObject.object; }
 	GameObject ** GetSelectObjectAddress() { return &selectObject.object; }
 	Layer * GetLayer() { return objectLayer; }
+	GameScene GetScene() { return currentScene; }
 
 	void SetSceneLayer(map<GameScene, Layer*> sceneLayer);
 	map<GameScene, Layer*>& GetSceneLayer() { return sceneLayer; }
@@ -64,6 +65,7 @@ private:
 	Object2D * editCircle;
 
 	map<GameScene, Layer*> sceneLayer;
+	GameScene currentScene;
 
 	// Scene
 	UIObject * sceneUIObject;
